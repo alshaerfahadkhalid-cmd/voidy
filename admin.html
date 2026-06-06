@@ -982,7 +982,7 @@ async function doRoll(){
     if(rollHistory.length>20)rollHistory=rollHistory.slice(0,20);
     sessionStorage.setItem('dh',JSON.stringify(rollHistory));
   }
-  location.reload();
+  setTimeout(function(){ location.reload(); }, 1000);
 }
 
 function openAdmin(){
