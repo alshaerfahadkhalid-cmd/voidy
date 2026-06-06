@@ -838,7 +838,22 @@ document.getElementById('chances-lnk').href='https://www.online-dice.com/chance-
 document.getElementById('loader-title').textContent=TITLES[Math.floor(Math.random()*TITLES.length)];
 
 function rnd(){return COLORS[Math.floor(Math.random()*COLORS.length)];}
-function makeRoll(n){var r=[];for(var i=0;i<n;i++)r.push(rnd());return r;}
+function makeRoll(n){
+  var r=[];
+  var recent=[];
+  for(var i=0;i<n;i++){
+    var attempts=0;
+    var c;
+    do {
+      c=rnd();
+      attempts++;
+    } while(attempts<6 && recent.indexOf(c.name)!==-1 && Math.random()<0.75);
+    r.push(c);
+    recent.push(c.name);
+    if(recent.length>3) recent.shift();
+  }
+  return r;
+}
 function dieSize(n){
   if(n<=2) return 'die-xl';
   if(n<=4) return 'die-lg';
