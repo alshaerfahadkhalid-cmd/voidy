@@ -906,27 +906,34 @@ function renderHistory(){
 function playRoll(){try{var s=document.getElementById('snd-roll');s.currentTime=0;s.play();}catch(e){}}
 function playSuccess(){try{var s=document.getElementById('snd-success');s.currentTime=0;s.play();}catch(e){}}
 
-/* ── ADMIN OVERRIDE ── localStorage + shareable URL ── */
-var ADMIN_PASS = 'voidy2026';
-var adminUnlocked = false;
+/* ── SUPABASE ADMIN OVERRIDE ── */
+var SUPABASE_URL = 'https://sqxkecwsvbmzrkqltjsk.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxeGtlY3dzdmJtenJrcWx0anNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzY5MzQsImV4cCI6MjA5NjI1MjkzNH0.cd_d14fUVy8oH0lLWqrepoKfTEGHgRai6QbLjZ-v-Eg';
 
-function checkAdminOverride(){
-  // Check URL param first (shared link from admin)
-  var params = new URLSearchParams(window.location.search);
-  var forced = params.get('force');
-  if(forced){
-    try {
-      var colors = JSON.parse(atob(forced));
-      if(Array.isArray(colors) && colors.length){
-        localStorage.setItem('dice-override', JSON.stringify({active:true, colors:colors}));
-      }
-    } catch(e){}
-  }
-  // Then check localStorage
+async function checkSupabaseOverride() {
   try {
-    var d = JSON.parse(localStorage.getItem('dice-override')||'{}');
-    if(d.active && Array.isArray(d.colors) && d.colors.length) return d.colors;
-  } catch(e){}
+    var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    });
+    var data = await res.json();
+    if (data && data.length > 0 && data[0].colors) {
+      var colors = JSON.parse(data[0].colors);
+      // Clear the override immediately so it only fires once
+      await fetch(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ active: false })
+      });
+      return colors;
+    }
+  } catch(e) {}
   return null;
 }
 
@@ -955,15 +962,17 @@ function applyLuckyUI(isLucky){
   }
 }
 
-function doRoll(){
+async function doRoll(){
   var rollCount = parseInt(localStorage.getItem('roll-count')||'0') + 1;
   localStorage.setItem('roll-count', rollCount);
   sessionStorage.setItem('is-lucky', (rollCount % 10 === 0) ? '1' : '0');
 
-  var override = checkAdminOverride();
-  var n = override ? override.length : parseInt(document.getElementById('num-sel').value);
-  var roll = override
-    ? override.map(function(name){ return COLORS.find(function(c){return c.name===name;})||COLORS[0]; })
+  document.querySelectorAll('.die').forEach(function(d){ d.classList.add('rolling'); });
+
+  var overrideNames = await checkSupabaseOverride();
+  var n = overrideNames ? overrideNames.length : parseInt(document.getElementById('num-sel').value);
+  var roll = overrideNames
+    ? overrideNames.map(function(name){ return COLORS.find(function(c){return c.name===name;})||COLORS[0]; })
     : makeRoll(n);
   sessionStorage.setItem('lr',JSON.stringify(roll));
   sessionStorage.setItem('nd',n);
@@ -973,7 +982,6 @@ function doRoll(){
     if(rollHistory.length>20)rollHistory=rollHistory.slice(0,20);
     sessionStorage.setItem('dh',JSON.stringify(rollHistory));
   }
-  document.querySelectorAll('.die').forEach(function(d){ d.classList.add('rolling'); });
   setTimeout(function(){ location.reload(); }, 1000);
 }
 
