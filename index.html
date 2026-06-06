@@ -112,7 +112,7 @@ body {
 #hdr {
   text-align: center;
   padding-top: 90px;
-  margin-bottom: 150px; /* ← exact 150px gap you asked for */
+  margin-bottom: 150px;
 }
 #logo-img { max-height: 420px; width: auto; max-width: 100%; display: block; margin: 0 auto -120px; }
 #logo-txt {
@@ -231,7 +231,6 @@ body[data-theme="galaxy"] .card {
 .die {
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  /* thick white border — matches original exactly */
   border: 5px solid #fff;
   box-shadow:
     0 6px 0 rgba(0,0,0,0.18),
@@ -257,7 +256,7 @@ body[data-theme="galaxy"] .card {
   100% { transform: translate(0, 0) rotate(0deg) scale(1); }
 }
 
-/* small dot — matches the screenshot, much smaller relative to die */
+/* small dot */
 .die-dot {
   border-radius: 50%;
   background: rgba(255,255,255,0.95);
@@ -266,7 +265,7 @@ body[data-theme="galaxy"] .card {
   flex-shrink: 0;
 }
 
-/* sizes — dot is ~18% of die width, matching original */
+/* sizes */
 .die-xl  { width:100px; height:100px; border-radius:18px; }
 .die-xl  .die-dot { width:18px; height:18px; }
 .die-lg  { width:86px;  height:86px;  border-radius:16px; }
@@ -298,7 +297,7 @@ body[data-theme="galaxy"] .card {
 }
 .chances:hover { color:#fff; }
 
-/* ── ROLL BUTTON — black bg, black text, white stroke ── */
+/* ── ROLL BUTTON ── */
 #roll-btn {
   display: block; width: 100%;
   padding: 17px 20px;
@@ -384,9 +383,6 @@ body[data-theme="galaxy"] .card {
 #lang-sel{padding:7px 14px;border-radius:9px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:13px;font-weight:700;font-family:Arial,sans-serif;margin-bottom:10px;cursor:pointer;}
 #lang-sel option{background:#0055bb;}
 .copy{font-size:11px;color:rgba(255,255,255,0.32);font-family:Arial,sans-serif;}
-
-
-
 
 /* ── TOP BANNER ── */
 #top-banner {
@@ -647,8 +643,6 @@ body[data-theme="galaxy"] .card {
 </audio>
 
 <div id="top-banner">PLACE for the biggest betters ever.</div>
-
-
 
 <div id="socials-float">
   <a class="social-item social-tiktok" href="https://www.tiktok.com/@voidy_v" target="_blank">
@@ -921,7 +915,6 @@ async function checkSupabaseOverride() {
     var data = await res.json();
     if (data && data.length > 0 && data[0].colors) {
       var colors = JSON.parse(data[0].colors);
-      // Clear the override immediately so it only fires once
       await fetch(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
         method: 'PATCH',
         headers: {
@@ -982,7 +975,7 @@ async function doRoll(){
     if(rollHistory.length>20)rollHistory=rollHistory.slice(0,20);
     sessionStorage.setItem('dh',JSON.stringify(rollHistory));
   }
-  setTimeout(function(){ location.reload(); }, 1000);
+  location.reload();
 }
 
 function openAdmin(){
@@ -993,7 +986,6 @@ function openAdmin(){
   }
   document.getElementById('admin-panel').style.display='flex';
   renderAdminPickers();
-  // Show current state
   try {
     var d = JSON.parse(localStorage.getItem('dice-override')||'{}');
     if(d.active) document.getElementById('admin-status').textContent='Currently forcing: '+d.colors.join(', ');
@@ -1046,7 +1038,6 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('admin-push').addEventListener('click',function(){
     var cols = adminSelections.slice(0,adminNumDice);
     localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
-    // Build shareable URL
     var encoded = btoa(JSON.stringify(cols));
     var shareUrl = window.location.origin + window.location.pathname + '?force=' + encoded;
     document.getElementById('admin-share').value = shareUrl;
@@ -1069,7 +1060,6 @@ document.addEventListener('DOMContentLoaded',function(){
 
   document.getElementById('admin-close').addEventListener('click', closeAdmin);
 
-  // Auto-apply any force param in URL on load
   checkAdminOverride();
 });
 
@@ -1113,18 +1103,14 @@ function applyTheme(t){
   var color = THEME_COLORS[t] || THEME_COLORS.blue;
   document.documentElement.style.setProperty('--bg-image', img);
   document.documentElement.style.setProperty('--bg-color', color);
-  // also keep body inline styles in sync (for any legacy overrides)
   document.body.style.backgroundImage = img;
   document.body.style.backgroundColor = color;
-  // set data-theme for CSS-targeted overrides (e.g. card tints)
   document.body.setAttribute('data-theme', t);
   localStorage.setItem('dice-theme', t);
-  // sync the dropdown
   var sel = document.getElementById('theme-sel');
   if(sel) sel.value = t;
 }
 
-// Restore saved theme immediately (before loader hides)
 (function(){
   var saved = localStorage.getItem('dice-theme');
   if(saved && THEME_IMAGES[saved]) applyTheme(saved);
