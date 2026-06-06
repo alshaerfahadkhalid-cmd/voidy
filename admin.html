@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Voidy Dice Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Luckiest Guy', cursive;
+  min-height: 100vh;
+  background: #07111f;
+  color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 30px 16px;
+}
+
+#login-screen, #admin-screen { width: 100%; max-width: 480px; }
+
+/* LOGIN */
+#login-screen {
+  background: rgba(25,100,200,0.35);
+  border: 2.5px solid rgba(255,255,255,0.5);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+}
+#login-screen h1 { font-size: 2.2rem; margin-bottom: 8px; color: #FFD700;
+  text-shadow: 2px 2px 0 #000; }
+#login-screen p { font-family: Arial, sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 28px; letter-spacing: 0; }
+#pw-input {
+  width: 100%; padding: 14px 18px;
+  border-radius: 12px; border: 2.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.08); color: #fff;
+  font-size: 18px; font-family: Arial, sans-serif;
+  outline: none; margin-bottom: 16px; text-align: center;
+  letter-spacing: 0.2em;
+}
+#pw-input::placeholder { color: rgba(255,255,255,0.3); letter-spacing: 0; }
+#login-btn {
+  width: 100%; padding: 15px;
+  border-radius: 12px; border: none; cursor: pointer;
+  background: linear-gradient(to bottom, #FFD700, #e6b800);
+  color: #000; font-family: 'Luckiest Guy', cursive;
+  font-size: 1.4rem; letter-spacing: 0.1em;
+  box-shadow: 0 4px 0 #9a7200;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+#login-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #9a7200; }
+#login-err { color: #ff5555; font-family: Arial, sans-serif; font-size: 13px; margin-top: 12px; display: none; }
+
+/* ADMIN */
+#admin-screen { display: none; }
+h2 {
+  font-size: 2rem; text-align: center; margin-bottom: 4px;
+  color: #FFD700; text-shadow: 2px 2px 0 #000;
+}
+.subtitle {
+  text-align: center; font-family: Arial, sans-serif;
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  margin-bottom: 28px; letter-spacing: 0;
+}
+
+.panel {
+  background: rgba(25,100,200,0.35);
+  border: 2.5px solid rgba(255,255,255,0.5);
+  border-radius: 18px; padding: 24px 22px; margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 1.1rem; letter-spacing: 0.1em; color: #fff;
+  margin-bottom: 18px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* NUM DICE */
+.num-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.num-btn {
+  flex: 1; min-width: 44px; padding: 10px 4px;
+  border-radius: 10px; border: 2.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08); color: #fff;
+  font-family: 'Luckiest Guy', cursive; font-size: 1.1rem;
+  cursor: pointer; transition: background 0.1s, border-color 0.1s;
+  text-align: center;
+}
+.num-btn.active {
+  background: #FFD700; color: #000;
+  border-color: #FFD700;
+  box-shadow: 0 3px 0 #9a7200;
+}
+
+/* COLOR PICKERS */
+#dice-pickers { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.die-pick {
+  flex: 1; min-width: 80px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 14px; padding: 12px 8px;
+  text-align: center; cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.die-pick:hover { border-color: rgba(255,255,255,0.5); transform: scale(1.04); }
+.die-pick .die-label {
+  font-size: 0.75rem; color: rgba(255,255,255,0.5);
+  margin-bottom: 8px; letter-spacing: 0.08em;
+}
+.die-swatch {
+  width: 48px; height: 48px; border-radius: 10px;
+  border: 4px solid #fff; margin: 0 auto 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+.die-name { font-size: 0.8rem; color: #fff; }
+
+/* COLOR CHOOSER */
+#color-chooser {
+  display: none; margin-top: 16px;
+  background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px;
+}
+#color-chooser .chooser-title {
+  font-size: 0.85rem; color: rgba(255,255,255,0.5);
+  margin-bottom: 12px; font-family: Arial, sans-serif; letter-spacing: 0;
+}
+.color-opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.color-opt {
+  width: 44px; height: 44px; border-radius: 9px;
+  border: 3px solid transparent; cursor: pointer;
+  transition: transform 0.1s, border-color 0.1s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.color-opt:hover { transform: scale(1.15); border-color: #fff; }
+
+/* PUSH BTN */
+#push-btn {
+  width: 100%; padding: 17px;
+  border-radius: 12px; border: none; cursor: pointer;
+  background: linear-gradient(to bottom, #22cc44, #18a035);
+  color: #fff; font-family: 'Luckiest Guy', cursive;
+  font-size: 1.5rem; letter-spacing: 0.08em;
+  box-shadow: 0 5px 0 #0e6020;
+  transition: transform 0.08s, box-shadow 0.08s;
+  margin-bottom: 10px;
+}
+#push-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #0e6020; }
+#push-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#clear-btn {
+  width: 100%; padding: 13px;
+  border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;
+  background: transparent; color: rgba(255,255,255,0.7);
+  font-family: 'Luckiest Guy', cursive; font-size: 1.1rem;
+  transition: background 0.1s, color 0.1s;
+}
+#clear-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+#status {
+  text-align: center; font-family: Arial, sans-serif;
+  font-size: 14px; margin-top: 12px; min-height: 20px;
+  color: #88ff88; letter-spacing: 0;
+}
+
+/* CURRENT FORCED */
+#current-panel { display: none; }
+.forced-dice { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.forced-die {
+  width: 40px; height: 40px; border-radius: 8px;
+  border: 3px solid #fff; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.forced-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.9); }
+.forced-label { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; letter-spacing: 0; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <h1>🎲 Voidy Admin</h1>
+  <p>Enter your password to control the dice</p>
+  <input type="password" id="pw-input" placeholder="Password" autocomplete="off"/>
+  <button id="login-btn" onclick="tryLogin()">Enter</button>
+  <div id="login-err">Wrong password. Try again.</div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <h2>🎲 Roll Control</h2>
+  <div class="subtitle">Force the next roll for everyone on the site</div>
+
+  <div class="panel" id="current-panel">
+    <div class="panel-title">⚡ Currently Forced Roll</div>
+    <div class="forced-dice" id="forced-preview"></div>
+    <div class="forced-label" id="forced-label"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">How many dice?</div>
+    <div class="num-row" id="num-row"></div>
+
+    <div class="panel-title">Pick colors:</div>
+    <div id="dice-pickers"></div>
+
+    <div id="color-chooser">
+      <div class="chooser-title">Choose color for Die <span id="chooser-die-num"></span>:</div>
+      <div class="color-opts" id="color-opts"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <button id="push-btn" onclick="pushRoll()">🎯 Force This Roll</button>
+    <button id="clear-btn" onclick="clearRoll()">🎲 Clear — Back to Random</button>
+    <div id="status"></div>
+  </div>
+</div>
+
+<script>
+var ADMIN_PASS = 'voidy2026';
+var SUPABASE_URL = 'https://sqxkecwsvbmzrkqltjsk.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxeGtlY3dzdmJtenJrcWx0anNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzY5MzQsImV4cCI6MjA5NjI1MjkzNH0.cd_d14fUVy8oH0lLWqrepoKfTEGHgRai6QbLjZ-v-Eg';
+
+var COLORS = [
+  {name:'Red',    hex:'#e52222'},
+  {name:'Orange', hex:'#e07820'},
+  {name:'Yellow', hex:'#FFD700'},
+  {name:'Green',  hex:'#0a6e1e'},
+  {name:'Blue',   hex:'#0a0acc'},
+  {name:'Purple', hex:'#6a0099'},
+];
+
+var numDice = 4;
+var selections = ['Red','Red','Red','Red'];
+var activePicker = null;
+
+function tryLogin() {
+  var pw = document.getElementById('pw-input').value;
+  if (pw === ADMIN_PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    init();
+    loadCurrentForced();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') tryLogin(); });
+
+function init() {
+  // Num buttons
+  var numRow = document.getElementById('num-row');
+  numRow.innerHTML = '';
+  [1,2,3,4,5,6].forEach(function(n) {
+    var btn = document.createElement('button');
+    btn.className = 'num-btn' + (n === numDice ? ' active' : '');
+    btn.textContent = n;
+    btn.onclick = function() {
+      numDice = n;
+      while(selections.length < n) selections.push('Red');
+      document.querySelectorAll('.num-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderPickers();
+      document.getElementById('color-chooser').style.display = 'none';
+    };
+    numRow.appendChild(btn);
+  });
+  renderPickers();
+  renderColorOpts();
+}
+
+function renderPickers() {
+  var container = document.getElementById('dice-pickers');
+  container.innerHTML = '';
+  for (var i = 0; i < numDice; i++) {
+    (function(idx) {
+      var c = COLORS.find(function(c){ return c.name === selections[idx]; }) || COLORS[0];
+      var div = document.createElement('div');
+      div.className = 'die-pick';
+      div.innerHTML = '<div class="die-label">DIE ' + (idx+1) + '</div>' +
+        '<div class="die-swatch" style="background:' + c.hex + '"></div>' +
+        '<div class="die-name">' + c.name + '</div>';
+      div.onclick = function() {
+        activePicker = idx;
+        document.getElementById('chooser-die-num').textContent = idx + 1;
+        document.getElementById('color-chooser').style.display = 'block';
+        document.querySelectorAll('.color-opt').forEach(function(o, oi){
+          o.style.borderColor = COLORS[oi].name === selections[idx] ? '#fff' : 'transparent';
+        });
+      };
+      container.appendChild(div);
+    })(i);
+  }
+}
+
+function renderColorOpts() {
+  var container = document.getElementById('color-opts');
+  container.innerHTML = '';
+  COLORS.forEach(function(c, i) {
+    var div = document.createElement('div');
+    div.className = 'color-opt';
+    div.style.background = c.hex;
+    div.title = c.name;
+    div.onclick = function() {
+      if (activePicker === null) return;
+      selections[activePicker] = c.name;
+      document.querySelectorAll('.color-opt').forEach(function(o, oi){
+        o.style.borderColor = oi === i ? '#fff' : 'transparent';
+      });
+      renderPickers();
+    };
+    container.appendChild(div);
+  });
+}
+
+async function loadCurrentForced() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    var data = await res.json();
+    if (data && data.length > 0 && data[0].colors) {
+      var colors = JSON.parse(data[0].colors);
+      showCurrentForced(colors);
+    }
+  } catch(e) {}
+}
+
+function showCurrentForced(colors) {
+  var panel = document.getElementById('current-panel');
+  var preview = document.getElementById('forced-preview');
+  var label = document.getElementById('forced-label');
+  panel.style.display = 'block';
+  preview.innerHTML = '';
+  colors.forEach(function(name) {
+    var c = COLORS.find(function(c){ return c.name === name; }) || COLORS[0];
+    var d = document.createElement('div');
+    d.className = 'forced-die';
+    d.style.background = c.hex;
+    var dot = document.createElement('div');
+    dot.className = 'forced-dot';
+    d.appendChild(dot);
+    preview.appendChild(d);
+  });
+  label.textContent = 'Waiting for next roll: ' + colors.join(', ');
+}
+
+async function pushRoll() {
+  var btn = document.getElementById('push-btn');
+  btn.disabled = true;
+  setStatus('Pushing...');
+  var colorNames = selections.slice(0, numDice);
+  try {
+    // Clear any existing override first
+    await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    // Insert new override
+    var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ colors: JSON.stringify(colorNames), active: true })
+    });
+    if (res.ok || res.status === 201) {
+      setStatus('✅ Forced! Next roll on the site will show: ' + colorNames.join(', '));
+      showCurrentForced(colorNames);
+    } else {
+      setStatus('❌ Error — try again.');
+    }
+  } catch(e) {
+    setStatus('❌ Network error.');
+  }
+  btn.disabled = false;
+}
+
+async function clearRoll() {
+  setStatus('Clearing...');
+  try {
+    await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    setStatus('🎲 Cleared — dice are random again.');
+    document.getElementById('current-panel').style.display = 'none';
+  } catch(e) {
+    setStatus('❌ Network error.');
+  }
+}
+
+function setStatus(msg) {
+  document.getElementById('status').textContent = msg;
+}
+</script>
+</body>
+</html>
