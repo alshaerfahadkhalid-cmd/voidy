@@ -837,19 +837,12 @@ document.getElementById('num-sel').value=numDice;
 document.getElementById('chances-lnk').href='https://www.online-dice.com/chance-of-winning/'+numDice+'/';
 document.getElementById('loader-title').textContent=TITLES[Math.floor(Math.random()*TITLES.length)];
 
-function rnd(){return COLORS[Math.floor(Math.random()*COLORS.length)];}
 function makeRoll(n){
+  // Each die is fully independent — equal 1/6 chance per color, repeats allowed.
+  // This matches exactly how online-dice.com works.
   var r=[];
-  var rollCounts={};
   for(var i=0;i<n;i++){
-    var c;
-    var attempts=0;
-    do {
-      c=rnd();
-      attempts++;
-    } while((rollCounts[c.name]||0)>=2 && attempts<20);
-    r.push(c);
-    rollCounts[c.name]=(rollCounts[c.name]||0)+1;
+    r.push(COLORS[Math.floor(Math.random()*COLORS.length)]);
   }
   return r;
 }
