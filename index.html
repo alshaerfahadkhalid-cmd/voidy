@@ -85,7 +85,7 @@ body {
   background: #fff; display: flex; align-items: center; justify-content: center;
   box-shadow: 0 5px 15px rgba(0,0,80,0.18);
   border: 4px solid #000;
-  animation: ldShake 1s ease-in-out 1 both;
+  animation: ldShake 0.4s ease-in-out 1 both;
 }
 .ld-die:nth-child(2){animation-delay:0s}
 .ld-die:nth-child(3){animation-delay:0s}
@@ -839,19 +839,29 @@ document.getElementById('loader-title').textContent=TITLES[Math.floor(Math.rando
 
 function rnd(){return COLORS[Math.floor(Math.random()*COLORS.length)];}
 function makeRoll(n){
+  var globalRecent=JSON.parse(sessionStorage.getItem('gr')||'[]');
   var r=[];
-  var recent=[];
+  var rollRecent=[];
   for(var i=0;i<n;i++){
     var attempts=0;
     var c;
     do {
       c=rnd();
       attempts++;
-    } while(attempts<6 && recent.indexOf(c.name)!==-1 && Math.random()<0.75);
+      if(attempts>=10) break;
+      var inRoll=rollRecent.filter(function(x){return x===c.name;}).length;
+      var inGlobal=globalRecent.filter(function(x){return x===c.name;}).length;
+      if(inRoll>=1 && Math.random()<0.9) continue;
+      if(inGlobal>=2 && Math.random()<0.85) continue;
+      if(inGlobal>=1 && Math.random()<0.6) continue;
+      break;
+    } while(true);
     r.push(c);
-    recent.push(c.name);
-    if(recent.length>3) recent.shift();
+    rollRecent.push(c.name);
   }
+  r.forEach(function(c){ globalRecent.push(c.name); });
+  if(globalRecent.length>12) globalRecent=globalRecent.slice(-12);
+  sessionStorage.setItem('gr',JSON.stringify(globalRecent));
   return r;
 }
 function dieSize(n){
