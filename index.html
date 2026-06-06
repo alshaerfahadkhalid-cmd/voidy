@@ -839,30 +839,29 @@ document.getElementById('loader-title').textContent=TITLES[Math.floor(Math.rando
 
 function rnd(){return COLORS[Math.floor(Math.random()*COLORS.length)];}
 function makeRoll(n){
-  var globalRecent=JSON.parse(sessionStorage.getItem('gr')||'[]');
   var r=[];
-  var rollRecent=[];
+  var rollCounts={};
   for(var i=0;i<n;i++){
-    var attempts=0;
     var c;
+    var attempts=0;
     do {
       c=rnd();
       attempts++;
-      if(attempts>=10) break;
-      var inRoll=rollRecent.filter(function(x){return x===c.name;}).length;
-      var inGlobal=globalRecent.filter(function(x){return x===c.name;}).length;
-      if(inRoll>=1 && Math.random()<0.9) continue;
-      if(inGlobal>=2 && Math.random()<0.85) continue;
-      if(inGlobal>=1 && Math.random()<0.6) continue;
-      break;
-    } while(true);
+    } while((rollCounts[c.name]||0)>=2 && attempts<20);
     r.push(c);
-    rollRecent.push(c.name);
+    rollCounts[c.name]=(rollCounts[c.name]||0)+1;
   }
-  r.forEach(function(c){ globalRecent.push(c.name); });
-  if(globalRecent.length>12) globalRecent=globalRecent.slice(-12);
-  sessionStorage.setItem('gr',JSON.stringify(globalRecent));
   return r;
+}
+
+async function fetchWithTimeout(url,opts,ms){
+  var controller=new AbortController();
+  var timer=setTimeout(function(){ controller.abort(); },ms);
+  try{
+    var res=await fetch(url,Object.assign({},opts,{signal:controller.signal}));
+    clearTimeout(timer);
+    return res;
+  }catch(e){ clearTimeout(timer); throw e; }
 }
 function dieSize(n){
   if(n<=2) return 'die-xl';
@@ -931,16 +930,16 @@ var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 
 async function checkSupabaseOverride() {
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
+    var res = await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY
       }
-    });
+    }, 3000);
     var data = await res.json();
     if (data && data.length > 0 && data[0].colors) {
       var colors = JSON.parse(data[0].colors);
-      await fetch(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
+      await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
         method: 'PATCH',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -948,7 +947,7 @@ async function checkSupabaseOverride() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ active: false })
-      });
+      }, 3000);
       return colors;
     }
   } catch(e) {}
