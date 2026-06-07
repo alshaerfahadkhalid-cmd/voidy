@@ -50,12 +50,8 @@ body {
 #loader > * { position: relative; z-index: 1; }
 #loader-inner {
   display: flex; flex-direction: column; align-items: center; gap: 22px;
-  animation: loaderZoomIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-#loader.hide #loader-inner {
-  animation: loaderZoomOut 0.4s cubic-bezier(0.55, 0, 1, 0.45) both;
-}
-#loader.hide { pointer-events: none; }
+#loader.hide { pointer-events: none; opacity: 0; }
 @keyframes loaderZoomIn {
   from { transform: scale(0.4); opacity: 0; }
   to   { transform: scale(1);   opacity: 1; }
@@ -66,22 +62,22 @@ body {
 }
 #loader-title {
   font-family: 'Luckiest Guy', cursive;
-  font-size: 3.8rem; color: #fff;
+  font-size: 2.6rem; color: #fff;
   text-shadow:
-    2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000,
-    1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
-    4px 4px 0 #000;
+    2px 0 0 #1565c0, -2px 0 0 #1565c0, 0 2px 0 #1565c0, 0 -2px 0 #1565c0,
+    1px 1px 0 #1565c0, -1px -1px 0 #1565c0, 1px -1px 0 #1565c0, -1px 1px 0 #1565c0,
+    3px 3px 0 #0d47a1;
   letter-spacing: 0.06em;
 }
-.ld-row { display: flex; gap: 20px; }
+.ld-row { display: flex; gap: 12px; }
 .ld-die {
-  width: 110px; height: 110px; border-radius: 22px;
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 5px 15px rgba(0,0,80,0.18);
-  border: 4px solid #000;
+  width: 78px; height: 78px; border-radius: 16px;
+  background: #c8c8cc; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,80,0.18);
+  border: 6px solid #fff;
   animation: ldShake 0.4s ease-in-out 1 both;
 }
-.ld-dot { width:20px; height:20px; border-radius:50%; background:#000; }
+.ld-dot { width:13px; height:13px; border-radius:50%; background:#fff; }
 @keyframes ldShake {
   0%   { transform: translate(0,0) rotate(0deg); }
   10%  { transform: translate(-4px,-3px) rotate(-6deg); }
@@ -97,7 +93,7 @@ body {
 }
 
 /* ── PAGE ── */
-#page { max-width: 720px; margin: 0 auto; padding: 62px 16px 80px; }
+#page { max-width: 820px; margin: 0 auto; padding: 24px 16px 80px; }
 
 /* ── HEADER ── */
 #hdr {
@@ -106,6 +102,8 @@ body {
   margin-bottom: 150px;
 }
 #logo-img { max-height: 420px; width: auto; max-width: 100%; display: block; margin: 0 auto -120px; }
+body[data-theme="void"] #hdr { position: relative; width: 100vw; left: 50%; transform: translateX(-50%); }
+body[data-theme="void"] #logo-img { height: 580px; max-height: none; width: auto; margin: 80px auto -180px; display: block; transform: translateX(3%); }
 #logo-txt {
   display: none;
   font-family: 'Luckiest Guy', cursive;
@@ -127,68 +125,92 @@ body {
 /* ── CARD ── */
 .card {
   background: rgba(25, 100, 200, 0.42);
-  border: 2.5px solid rgba(255,255,255,0.65);
-  border-radius: 18px;
-  padding: 24px 22px 20px;
+  border: 5px solid rgba(155, 155, 155, 0.75);
+  border-radius: 20px;
+  padding: 36px 36px 40px;
   margin-bottom: 18px;
-  transition: background 0.4s ease, border-color 0.4s ease;
+  transition: background 0.4s ease;
 }
 body[data-theme="duo"] .card {
   background: rgba(110, 65, 20, 0.52);
-  border-color: rgba(195, 148, 72, 0.62);
 }
 body[data-theme="galaxy"] .card {
   background: rgba(60, 20, 100, 0.48);
-  border-color: rgba(180, 120, 255, 0.55);
 }
+body[data-theme="void"] .card {
+  background: transparent;
+}
+/* ── VOID THEME OVERRIDES ── */
+body[data-theme="void"] .card-title {
+  text-shadow:
+    3px 0 0 #000, -3px 0 0 #000, 0 3px 0 #000, 0 -3px 0 #000,
+    2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+    4px 0 0 #000, -4px 0 0 #000, 0 4px 0 #000, 0 -4px 0 #000,
+    5px 5px 0 #000, -5px -5px 0 #000,
+    6px 6px 10px rgba(0,0,0,0.6);
+}
+body[data-theme="void"] .selects select {
+  background-color: #fff;
+  color: #111;
+  border-color: rgba(0,0,0,0.35);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='11' viewBox='0 0 16 11'%3E%3Cpath d='M1 1l7 8 7-8' stroke='%23111111' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+body[data-theme="void"] .selects select:hover { background-color: #f0f0f0; }
+body[data-theme="void"] .selects select option { background: #fff; color: #111; }
 
 /* ── CARD TITLE ── */
 .card-title {
   font-family: 'Luckiest Guy', cursive;
   text-align: center;
-  font-size: 1.6rem; letter-spacing: 0.12em;
+  font-size: 2.4rem; letter-spacing: 0.1em;
   color: #fff;
   text-shadow:
-    2px 0 0 #1e88e5, -2px 0 0 #1e88e5, 0 2px 0 #1e88e5, 0 -2px 0 #1e88e5,
-    1px 1px 0 #1e88e5, -1px -1px 0 #1e88e5, 1px -1px 0 #1e88e5, -1px 1px 0 #1e88e5,
-    3px 3px 0 #1565c0;
-  margin-bottom: 18px;
+    3px 0 0 #1565c0, -3px 0 0 #1565c0, 0 3px 0 #1565c0, 0 -3px 0 #1565c0,
+    2px 2px 0 #1565c0, -2px -2px 0 #1565c0, 2px -2px 0 #1565c0, -2px 2px 0 #1565c0,
+    4px 0 0 #0d47a1, -4px 0 0 #0d47a1, 0 4px 0 #0d47a1, 0 -4px 0 #0d47a1,
+    5px 5px 0 #0d47a1, -5px -5px 0 #0d47a1,
+    6px 6px 8px rgba(0,0,80,0.4);
+  margin-bottom: 22px;
+  -webkit-text-stroke: 0px;
 }
 
 /* ── SELECTS ── */
-.selects { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.selects { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
 .selects select {
   flex: 1; min-width: 0;
-  padding: 13px 36px 13px 14px;
-  border-radius: 14px;
-  border: 2.5px solid rgba(255,255,255,0.55);
+  padding: 14px 34px 14px 14px;
+  border-radius: 8px;
+  border: 3px solid #2196f3;
   background: #fff;
   color: #1565c0;
   font-family: 'Luckiest Guy', cursive;
-  font-size: 22px; font-weight: 400;
-  letter-spacing: 0.06em;
+  font-size: 24px; font-weight: 700;
+  letter-spacing: 0.05em;
   cursor: pointer; outline: none;
   appearance: none; -webkit-appearance: none;
   text-align: left;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.15), 0 6px 14px rgba(0,0,60,0.18);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'%3E%3Cpath d='M1 1l8 9 8-9' stroke='%231565c0' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  box-shadow: 0 3px 0 rgba(0,0,100,0.1), 0 4px 10px rgba(0,0,60,0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='11' viewBox='0 0 16 11'%3E%3Cpath d='M1 1l7 8 7-8' stroke='%232196f3' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   transition: background-color 0.15s, transform 0.08s, box-shadow 0.08s;
 }
+#num-sel   { flex: 1; min-width: 0; }
+#mode-sel  { flex: 1; min-width: 0; }
+#theme-sel { flex: 1; min-width: 0; }
 .selects select:hover { background-color: #f0f6ff; }
 .selects select:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,60,0.18);
+  box-shadow: 0 1px 0 rgba(0,0,100,0.1), 0 2px 5px rgba(0,0,60,0.1);
 }
 .selects select option { background: #fff; color: #1565c0; }
-.selects select:focus { border-color: rgba(255,255,255,0.85); }
+.selects select:focus { border-color: #1565c0; }
 
 /* ── TABLETOP ── */
 #tabletop {
   display: flex; flex-wrap: wrap;
   gap: 12px; justify-content: center;
-  padding: 10px 0 16px; min-height: 100px;
+  padding: 10px 0 95px; min-height: 100px;
 }
 
 @keyframes dieReveal {
@@ -204,8 +226,8 @@ body[data-theme="galaxy"] .card {
 .die {
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  border: 5px solid #fff;
-  box-shadow: 0 6px 0 rgba(0,0,0,0.18), 0 8px 20px rgba(0,0,80,0.2);
+  border: 8px solid #fff;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,80,0.28), 0 0 0 1px rgba(0,0,0,0.1);
   flex-shrink: 0;
   transition: transform 0.06s;
   cursor: default;
@@ -252,11 +274,23 @@ body[data-theme="galaxy"] .card {
 
 /* ── COLOR HINT ── */
 .color-hint {
-  text-align: center; font-size: 13px;
-  color: rgba(255,255,255,0.95); font-family: 'Luckiest Guy', cursive;
-  background: rgba(180,210,255,0.18);
-  border-radius: 6px; padding: 5px 8px;
-  margin: 2px 0 14px;
+  text-align: center; font-size: 14px;
+  color: rgba(255,255,255,0.92); font-family: Arial, sans-serif; font-weight: 700;
+  background: rgba(180,210,255,0.15);
+  border-radius: 6px; padding: 8px 10px;
+  margin: 16px 0 0;
+}
+
+/* ── CHANCES LINK ── */
+#chances-link {
+  display: block;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.72);
+  text-decoration: underline;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 /* ── ROLL BUTTON ── */
@@ -282,14 +316,7 @@ body[data-theme="galaxy"] .card {
 #roll-btn:active { transform:translateY(4px); box-shadow:0 1px 0 #000,0 3px 8px rgba(0,0,0,0.3); }
 
 /* ── SHOW HISTORY ── */
-#show-hist {
-  display: none; text-align: center;
-  font-size: 13px; font-weight: 700;
-  color: rgba(255,255,255,0.78);
-  cursor: pointer; text-decoration: underline;
-  margin-top: 11px; font-family: Arial,sans-serif;
-}
-#show-hist:hover{color:#fff;}
+#show-hist { display: none !important; }
 
 /* ── SECTION TITLES ── */
 .sec-title {
@@ -301,36 +328,16 @@ body[data-theme="galaxy"] .card {
 }
 
 /* ── HISTORY ── */
-#hist-card{display:none;}
-#hist-card.on{display:block;}
+#hist-card{display:block;}
 .hist-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 #hist-close{font-size:18px;cursor:pointer;color:rgba(255,255,255,0.6);line-height:1;}
 #hist-close:hover{color:#fff;}
 .hist-row{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.2);}
 .hist-num{min-width:26px;text-align:right;font-size:12px;color:rgba(255,255,255,0.5);font-weight:700;font-family:Arial,sans-serif;}
 .hist-die{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:3px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.18);}
-.hist-ddot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.95);box-shadow:0 1px 3px rgba(0,0,0,0.25);}
+.hist-ddot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.95);box-shadow:0 1px 3px rgba(0,0,0,0.25);}
 .hist-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,0.52);margin-left:3px;font-family:Arial,sans-serif;}
 .hist-note{font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;font-family:Arial,sans-serif;}
-
-/* ── TOP BANNER ── */
-#top-banner {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 10000;
-  text-align: center;
-  padding: 14px 20px;
-  font-family: 'Luckiest Guy', cursive;
-  font-size: 1.55rem;
-  letter-spacing: 0.08em;
-  color: #fff;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(6px);
-  border-bottom: 2px solid rgba(255,215,0,0.4);
-  text-shadow:
-    2px 0 0 #b87800, -2px 0 0 #b87800, 0 2px 0 #b87800, 0 -2px 0 #b87800,
-    0 0 18px rgba(255,215,0,0.7);
-}
 
 /* ── QUOTE ── */
 #quote-block {
@@ -371,7 +378,7 @@ body[data-theme="galaxy"] .card {
 /* ── FLOATING SOCIALS ── */
 #socials-float {
   position: fixed;
-  top: 72px; left: 16px; z-index: 9998;
+  top: 16px; left: 16px; z-index: 9998;
   display: flex; flex-direction: column; gap: 8px;
   animation: socialsFloat 4s ease-in-out infinite;
 }
@@ -402,7 +409,77 @@ body[data-theme="galaxy"] .card {
   filter: drop-shadow(0 2px 4px rgba(88,101,242,0.5));
 }
 
-/* ── ADMIN PANEL ── */
+/* ── ADMIN GATE ── */
+#admin-gate {
+  display: none; position: fixed; inset: 0; z-index: 999999;
+  align-items: center; justify-content: center;
+  background: url("https://i.imgur.com/yDIam5b.png") center/cover no-repeat;
+  flex-direction: column;
+}
+#admin-gate::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 0;
+}
+#admin-gate > * { position: relative; z-index: 1; }
+#gate-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 2.2rem; letter-spacing: 0.15em;
+  color: #fff;
+  text-shadow:
+    3px 0 0 #000, -3px 0 0 #000, 0 3px 0 #000, 0 -3px 0 #000,
+    2px 2px 0 #000, -2px -2px 0 #000,
+    5px 5px 10px rgba(0,0,0,0.7);
+  margin-bottom: 10px; text-align: center;
+}
+#gate-sub {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1rem; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 28px; text-align: center;
+}
+#gate-input {
+  width: 320px; max-width: 90vw;
+  padding: 14px 18px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.3rem; letter-spacing: 0.12em;
+  text-align: center;
+  background: rgba(0,0,0,0.6);
+  border: 2.5px solid rgba(255,255,255,0.4);
+  border-radius: 12px; color: #fff; outline: none;
+  margin-bottom: 16px;
+}
+#gate-input::placeholder { color: rgba(255,255,255,0.3); }
+#gate-input:focus { border-color: rgba(255,255,255,0.8); }
+#gate-error {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1rem; letter-spacing: 0.08em;
+  color: #ff4444;
+  text-shadow: 1px 1px 0 #000;
+  margin-bottom: 12px; min-height: 24px; text-align: center;
+}
+#gate-submit {
+  padding: 13px 40px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.2rem; letter-spacing: 0.1em;
+  background: linear-gradient(to bottom, #2a2a2a, #000);
+  color: #fff; border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 12px; cursor: pointer;
+  text-shadow: 1px 1px 0 #000;
+  transition: background 0.15s, transform 0.08s;
+}
+#gate-submit:hover { background: linear-gradient(to bottom, #3a3a3a, #111); }
+#gate-submit:active { transform: translateY(3px); }
+#gate-close-btn {
+  margin-top: 18px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 0.85rem; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.35); background: none;
+  border: none; cursor: pointer;
+}
+#gate-close-btn:hover { color: rgba(255,255,255,0.7); }
+/* ── ADMIN TRIGGER ── */
 #admin-trigger {
   position: fixed; bottom: 18px; right: 18px; z-index: 9999;
   width: 38px; height: 38px; border-radius: 50%;
@@ -412,60 +489,178 @@ body[data-theme="galaxy"] .card {
   transition: 0.2s;
 }
 #admin-trigger:hover { background: rgba(0,0,0,0.85); color: #fff; border-color: rgba(255,255,255,0.6); }
+
+/* ── ADMIN PANEL (SINGLE PAGE CARDS) ── */
 #admin-panel {
   display: none; position: fixed; inset: 0; z-index: 99999;
-  align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  align-items: flex-start; justify-content: center;
+  background: rgba(0,0,0,0.72); backdrop-filter: blur(8px);
+  overflow-y: auto; padding: 24px 12px 48px;
 }
 #admin-box {
-  background: #111; border: 2px solid rgba(255,255,255,0.15);
-  border-radius: 18px; padding: 28px 24px; width: 90%; max-width: 480px;
-  position: relative;
+  background: transparent;
+  width: 100%; max-width: 520px;
+  display: flex; flex-direction: column; gap: 14px;
 }
-#admin-box h2 {
-  font-family: 'Luckiest Guy', cursive; font-size: 1.4rem;
-  color: #fff; letter-spacing: 0.1em; margin-bottom: 4px;
-  text-shadow: 2px 0 0 #000,-2px 0 0 #000,0 2px 0 #000,0 -2px 0 #000;
+/* Header */
+#admin-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2px 2px 0;
 }
-#admin-box .admin-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 18px; font-family: Arial,sans-serif; }
+#admin-header h2 {
+  font-family: 'Luckiest Guy', cursive; font-size: 1.3rem;
+  color: #fff; letter-spacing: 0.1em; margin: 0;
+}
 #admin-close {
-  position: absolute; top: 14px; right: 16px;
-  background: none; border: none; color: rgba(255,255,255,0.5);
-  font-size: 22px; cursor: pointer; line-height: 1;
+  background: none; border: none; color: rgba(255,255,255,0.45);
+  font-size: 22px; cursor: pointer; line-height: 1; padding: 0;
+  transition: color 0.15s;
 }
 #admin-close:hover { color: #fff; }
-#admin-num-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-#admin-num-row label { font-size: 13px; color: rgba(255,255,255,0.6); font-family: Arial,sans-serif; }
-#admin-num { background: #222; color: #fff; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 5px 10px; font-size: 14px; }
-#admin-pickers { display: grid; grid-template-columns: repeat(auto-fit,minmax(90px,1fr)); gap: 10px; margin-bottom: 18px; }
-.apick { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 7px; }
-.apick-swatch { width: 40px; height: 40px; border-radius: 8px; border: 3px solid #fff; }
-.apick-lbl { font-size: 11px; color: rgba(255,255,255,0.45); font-family: Arial,sans-serif; }
-.apick-sel { background: #222; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-size: 12px; padding: 3px 5px; width: 100%; }
-#admin-btns { display: flex; gap: 10px; }
-#admin-push {
-  flex: 2; padding: 12px; border-radius: 10px; border: none; cursor: pointer;
-  background: linear-gradient(to bottom,#2a2a2a,#000); color: #fff;
-  font-family: 'Luckiest Guy', cursive; font-size: 1rem; letter-spacing: 0.08em;
-  text-shadow: 1px 0 0 #fff,-1px 0 0 #fff,0 1px 0 #fff,0 -1px 0 #fff;
-  border: 2px solid rgba(255,255,255,0.6);
+/* Section cards */
+.asection {
+  background: #0e0e12;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 18px 20px 20px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
 }
-#admin-push:hover { background: #222; }
-#admin-random {
-  flex: 1; padding: 12px; border-radius: 10px; cursor: pointer;
-  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.7); font-family: Arial,sans-serif; font-size: 13px;
+.asection-title {
+  font-family: Arial, sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #4f8ef7; margin-bottom: 14px;
 }
-#admin-random:hover { background: rgba(255,255,255,0.14); color: #fff; }
-#admin-status { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.5); font-family: Arial,sans-serif; min-height: 18px; }
-#admin-share-row { display: none; margin-top: 12px; display: none; gap: 8px; align-items: center; }
-#admin-share { flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18); border-radius: 7px; color: #ccc; font-size: 11px; padding: 6px 9px; font-family: Arial,sans-serif; }
-#admin-copy { padding: 6px 12px; border-radius: 7px; background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 12px; font-family: Arial,sans-serif; }
-#admin-copy:hover { background: #444; }
+#admin-content { display: contents; }
+
+/* ── Shared form elements inside admin ── */
+.afield-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  font-family: Arial, sans-serif; margin-bottom: 6px; display: block;
+}
+.afield-input, .afield-select, .afield-textarea {
+  width: 100%;
+  background: #1a1a22; border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 9px; color: #fff;
+  font-family: Arial, sans-serif; font-size: 13px;
+  padding: 9px 12px; outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.afield-input:focus, .afield-select:focus, .afield-textarea:focus {
+  border-color: #4f8ef7;
+}
+.afield-textarea { resize: vertical; min-height: 80px; }
+.afield-group { margin-bottom: 16px; }
+.afield-row { display: flex; gap: 10px; }
+.afield-row > * { flex: 1; }
+.abtn {
+  padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer;
+  font-family: Arial, sans-serif; font-size: 13px; font-weight: 700;
+  transition: 0.15s; letter-spacing: 0.03em;
+}
+.abtn-primary {
+  background: #4f8ef7; color: #fff;
+}
+.abtn-primary:hover { background: #3a7de0; }
+.abtn-secondary {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75);
+  border: 1.5px solid rgba(255,255,255,0.15);
+}
+.abtn-secondary:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.abtn-danger {
+  background: rgba(220,50,50,0.18); color: #f77; border: 1.5px solid rgba(220,50,50,0.3);
+}
+.abtn-danger:hover { background: rgba(220,50,50,0.3); color: #faa; }
+.abtn-full { width: 100%; }
+.astatus {
+  font-size: 12px; color: rgba(255,255,255,0.45);
+  font-family: Arial, sans-serif; margin-top: 12px; min-height: 18px;
+}
+
+/* ── HEIGHT TAB ── */
+.aslider-wrap { display: flex; align-items: center; gap: 12px; }
+.aslider-wrap input[type=range] {
+  flex: 1; accent-color: #4f8ef7; cursor: pointer;
+}
+.aslider-val {
+  width: 46px; text-align: center;
+  background: #1a1a22; border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 7px; color: #fff; font-size: 12px;
+  padding: 5px 6px; font-family: Arial, sans-serif;
+}
+
+/* ── LOGO TAB ── */
+#logo-preview-wrap {
+  background: rgba(255,255,255,0.04); border-radius: 10px;
+  padding: 14px; text-align: center; margin-bottom: 14px;
+  border: 1.5px dashed rgba(255,255,255,0.12);
+  min-height: 80px; display: flex; align-items: center; justify-content: center;
+}
+#logo-preview { max-height: 100px; max-width: 100%; border-radius: 6px; }
+
+/* ── ADD TEXT TAB ── */
+.pos-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 6px;
+  margin-bottom: 16px;
+}
+.pos-btn {
+  padding: 8px 4px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55);
+  font-size: 11px; cursor: pointer; text-align: center;
+  font-family: Arial, sans-serif; font-weight: 700; transition: 0.15s;
+}
+.pos-btn:hover, .pos-btn.active { background: #4f8ef7; color: #fff; border-color: #4f8ef7; }
+
+/* ── ADD CARDS TAB ── */
+.acard-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.acard-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 9px; padding: 9px 12px;
+}
+.acard-item-title { font-size: 13px; color: #fff; font-family: Arial, sans-serif; }
+.acard-item-del {
+  background: none; border: none; color: rgba(255,100,100,0.6);
+  font-size: 16px; cursor: pointer; line-height: 1; padding: 0;
+}
+.acard-item-del:hover { color: #f77; }
+
+/* ── CREDITS TAB ── */
+.acredit-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.acredit-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 9px; padding: 10px 12px;
+}
+.acredit-text { flex: 1; }
+.acredit-name { font-size: 13px; font-weight: 700; color: #fff; font-family: Arial, sans-serif; }
+.acredit-role { font-size: 11px; color: rgba(255,255,255,0.45); font-family: Arial, sans-serif; margin-top: 2px; }
+.acredit-del {
+  background: none; border: none; color: rgba(255,100,100,0.5);
+  font-size: 15px; cursor: pointer; padding: 0; flex-shrink: 0;
+}
+.acredit-del:hover { color: #f77; }
+
+
+
+/* Floating text overlays */
+.float-text-overlay {
+  position: fixed; z-index: 9000;
+  cursor: move; user-select: none;
+  padding: 4px 8px;
+}
+.float-text-overlay .float-del-btn {
+  display: none; position: absolute; top: -8px; right: -8px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #e33; color: #fff; border: none;
+  font-size: 11px; cursor: pointer; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.float-text-overlay:hover .float-del-btn { display: flex; }
 
 /* ── LUCKY ROLL STATE ── */
 .lucky-card {
-  border-color: rgba(255,215,0,0.92) !important;
   box-shadow: 0 0 32px rgba(255,210,0,0.25), inset 0 0 0 1px rgba(255,215,0,0.15);
 }
 .lucky-title {
@@ -554,7 +749,6 @@ var THEME_IMAGES = {
   <source src="https://www.online-dice.com/sounds/success.mp3" type="audio/mpeg">
 </audio>
 
-<div id="top-banner">PLACE for the biggest betters ever.</div>
 
 <div id="socials-float">
   <a class="social-item social-tiktok" href="https://www.tiktok.com/@voidy_v" target="_blank">
@@ -577,33 +771,180 @@ var THEME_IMAGES = {
   </div>
 </div>
 
+<!-- Admin Gate -->
+<div id="admin-gate">
+  <div id="gate-title">Admin Access</div>
+  <div id="gate-sub">Enter the secret key</div>
+  <input id="gate-input" type="password" placeholder="••••••••••••" autocomplete="off" maxlength="32"/>
+  <div id="gate-error"></div>
+  <button id="gate-submit">Enter</button>
+  <button id="gate-close-btn">Cancel</button>
+</div>
+
 <!-- Admin panel -->
 <button id="admin-trigger" onclick="openAdmin()">⚙</button>
 <div id="admin-panel">
   <div id="admin-box">
-    <h2>Admin Override</h2>
-    <div class="admin-sub">Force a specific roll result for all users.</div>
-    <button id="admin-close">✕</button>
-    <div id="admin-num-row">
-      <label>Number of dice:</label>
-      <select id="admin-num">
-        <option value="1">1</option><option value="2">2</option>
-        <option value="3">3</option><option value="4" selected>4</option>
-        <option value="5">5</option><option value="6">6</option>
-      </select>
+
+    <!-- Header -->
+    <div id="admin-header">
+      <h2>⚙ Admin Panel</h2>
+      <button id="admin-close">✕</button>
     </div>
-    <div id="admin-pickers"></div>
-    <div id="admin-btns">
-      <button id="admin-push">Push Override</button>
-      <button id="admin-random">Clear</button>
-    </div>
-    <div id="admin-share-row">
-      <input id="admin-share" type="text" readonly/>
-      <button id="admin-copy">Copy</button>
-    </div>
-    <div id="admin-status"></div>
-  </div>
-</div>
+
+    <div id="admin-content">
+
+      <!-- ── CARD: HEIGHT ── -->
+      <div class="asection">
+        <div class="asection-title">Height &amp; Spacing</div>
+        <div class="afield-group">
+          <label class="afield-label">Card Padding (top &amp; bottom)</label>
+          <div class="aslider-wrap">
+            <input type="range" id="pad-slider" min="8" max="80" value="36" step="1">
+            <input type="number" class="aslider-val" id="pad-val" min="8" max="80" value="36">
+            <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:Arial;">px</span>
+          </div>
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Card Gap / Margin Between Cards</label>
+          <div class="aslider-wrap">
+            <input type="range" id="gap-slider" min="0" max="60" value="18" step="1">
+            <input type="number" class="aslider-val" id="gap-val" min="0" max="60" value="18">
+            <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:Arial;">px</span>
+          </div>
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Header Top Padding</label>
+          <div class="aslider-wrap">
+            <input type="range" id="hdrtop-slider" min="0" max="200" value="90" step="2">
+            <input type="number" class="aslider-val" id="hdrtop-val" min="0" max="200" value="90">
+            <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:Arial;">px</span>
+          </div>
+        </div>
+        <button class="abtn abtn-secondary abtn-full" id="height-reset">Reset to Defaults</button>
+      </div>
+
+      <!-- ── CARD: LOGO ── -->
+      <div class="asection">
+        <div class="asection-title">Logo</div>
+        <div id="logo-preview-wrap">
+          <img id="logo-preview" src="" alt="Logo preview" onerror="this.style.display='none'" style="display:none;">
+          <span id="logo-preview-placeholder" style="font-size:12px;color:rgba(255,255,255,0.25);font-family:Arial;">Preview will appear here</span>
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Logo Image URL</label>
+          <input type="url" class="afield-input" id="logo-url-input" placeholder="https://i.imgur.com/yourimage.png">
+        </div>
+        <div class="afield-row">
+          <button class="abtn abtn-secondary" id="logo-preview-btn">Preview</button>
+          <button class="abtn abtn-primary" id="logo-apply-btn">Apply</button>
+          <button class="abtn abtn-secondary" id="logo-reset-btn">Reset</button>
+        </div>
+        <div class="astatus" id="logo-status"></div>
+      </div>
+
+      <!-- ── CARD: ADD TEXT ── -->
+      <div class="asection">
+        <div class="asection-title">Add Text Overlay</div>
+        <div class="afield-group">
+          <label class="afield-label">Text Content</label>
+          <input type="text" class="afield-input" id="ft-text" placeholder="Enter your text...">
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Position</label>
+          <div class="pos-grid">
+            <button class="pos-btn" data-pos="top-left">↖ Top Left</button>
+            <button class="pos-btn active" data-pos="top-center">↑ Top Center</button>
+            <button class="pos-btn" data-pos="top-right">↗ Top Right</button>
+            <button class="pos-btn" data-pos="mid-left">← Mid Left</button>
+            <button class="pos-btn" data-pos="mid-center">✦ Center</button>
+            <button class="pos-btn" data-pos="mid-right">→ Mid Right</button>
+            <button class="pos-btn" data-pos="bot-left">↙ Bot Left</button>
+            <button class="pos-btn" data-pos="bot-center">↓ Bot Center</button>
+            <button class="pos-btn" data-pos="bot-right">↘ Bot Right</button>
+          </div>
+        </div>
+        <div class="afield-row">
+          <div class="afield-group">
+            <label class="afield-label">Font Size</label>
+            <input type="number" class="afield-input" id="ft-size" value="20" min="8" max="120" placeholder="px">
+          </div>
+          <div class="afield-group">
+            <label class="afield-label">Color</label>
+            <input type="color" class="afield-input" id="ft-color" value="#ffffff" style="height:42px;padding:3px 6px;cursor:pointer;">
+          </div>
+          <div class="afield-group">
+            <label class="afield-label">Weight</label>
+            <select class="afield-select" id="ft-weight">
+              <option value="400">Normal</option>
+              <option value="700" selected>Bold</option>
+              <option value="900">Black</option>
+            </select>
+          </div>
+        </div>
+        <button class="abtn abtn-primary abtn-full" id="ft-add-btn">Add Text Overlay</button>
+        <div class="astatus" id="ft-status"></div>
+        <div style="margin-top:12px;">
+          <label class="afield-label">Active Overlays</label>
+          <div id="ft-list" style="font-size:12px;color:rgba(255,255,255,0.35);font-family:Arial;">None yet.</div>
+        </div>
+      </div>
+
+      <!-- ── CARD: ADD CARDS ── -->
+      <div class="asection">
+        <div class="asection-title">Add Cards</div>
+        <div class="afield-group">
+          <label class="afield-label">Card Title</label>
+          <input type="text" class="afield-input" id="nc-title" placeholder="e.g. How to Play">
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Card Content (HTML allowed)</label>
+          <textarea class="afield-textarea" id="nc-content" placeholder="Card body text or HTML..."></textarea>
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Insert Position</label>
+          <select class="afield-select" id="nc-position">
+            <option value="before-main">Before Main Card</option>
+            <option value="after-main" selected>After Main Card</option>
+            <option value="after-history">After History Card</option>
+          </select>
+        </div>
+        <button class="abtn abtn-primary abtn-full" id="nc-add-btn">Add Card</button>
+        <div class="astatus" id="nc-status"></div>
+        <div style="margin-top:12px;">
+          <label class="afield-label">Custom Cards</label>
+          <div class="acard-list" id="nc-list"></div>
+          <div id="nc-empty" style="font-size:12px;color:rgba(255,255,255,0.3);font-family:Arial;">No custom cards yet.</div>
+        </div>
+      </div>
+
+      <!-- ── CARD: CREDITS ── -->
+      <div class="asection">
+        <div class="asection-title">Credits</div>
+        <div class="acredit-list" id="credits-list"></div>
+        <div id="credits-empty" style="font-size:12px;color:rgba(255,255,255,0.3);font-family:Arial;margin-bottom:14px;display:none;">No credits yet.</div>
+        <hr style="border:none;border-top:1.5px solid rgba(255,255,255,0.08);margin:14px 0 16px;">
+        <div class="afield-row">
+          <div class="afield-group">
+            <label class="afield-label">Name</label>
+            <input type="text" class="afield-input" id="cr-name" placeholder="e.g. Voidy">
+          </div>
+          <div class="afield-group">
+            <label class="afield-label">Role</label>
+            <input type="text" class="afield-input" id="cr-role" placeholder="Creator &amp; Developer">
+          </div>
+        </div>
+        <div class="afield-group">
+          <label class="afield-label">Link (optional)</label>
+          <input type="url" class="afield-input" id="cr-link" placeholder="https://tiktok.com/@...">
+        </div>
+        <button class="abtn abtn-primary abtn-full" id="cr-add-btn">Add Credit</button>
+        <div class="astatus" id="cr-status"></div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-box -->
+</div><!-- /admin-panel -->
 
 <div id="page">
 
@@ -637,18 +978,25 @@ var THEME_IMAGES = {
         <option value="40">40 dice</option><option value="50">50 dice</option>
         <option value="75">75 dice</option><option value="100">100 dice</option>
       </select>
+      <select id="mode-sel" autocomplete="off">
+        <option value="color">Color Dice</option>
+      </select>
       <select id="theme-sel" autocomplete="off">
         <option value="blue" selected>Select Theme</option>
         <option value="blue">Blue</option>
         <option value="red">Red</option>
         <option value="duo">DUO</option>
         <option value="galaxy">Galaxy</option>
+        <option value="void">Void</option>
       </select>
     </div>
 
     <div id="tabletop"></div>
 
-    <div class="color-hint">Possible colors:
+    <a id="roll-btn" href="#">Roll Again !</a>
+    <div id="lucky-badge">🌟 Roll #<span id="lucky-num"></span> — Lucky Roll!</div>
+
+    <div class="color-hint">Possible colors are:
       <span style="color:#ff4444;font-weight:900;">Red</span>,
       <span style="color:#ff9900;font-weight:900;">Orange</span>,
       <span style="color:#ffd700;font-weight:900;">Yellow</span>,
@@ -656,16 +1004,14 @@ var THEME_IMAGES = {
       <span style="color:#0a0acc;font-weight:900;">Blue</span> and
       <span style="color:#6a0099;font-weight:900;">Purple</span>.
     </div>
+    <a id="chances-link" href="#">See your chances of winning →</a>
 
-    <a id="roll-btn" href="#">Roll Again !</a>
-    <div id="lucky-badge">🌟 Roll #<span id="lucky-num"></span> — Lucky Roll!</div>
     <div id="show-hist" onclick="showHistory()">Your Last 20 Rolls ↓</div>
   </div>
 
   <div id="hist-card" class="card">
     <div class="hist-top">
       <div class="sec-title" style="margin-bottom:0;">Your Last 20 Rolls</div>
-      <span id="hist-close" onclick="hideHistory()">✕</span>
     </div>
     <div id="hist-list"></div>
     <div class="hist-note">Note: only dice rolls with up to 6 dice are saved.</div>
@@ -684,7 +1030,7 @@ var COLORS = [
 ];
 var TITLES = ["What Color Will It Be?","Rolling..","Color Me Surprised!","Amazing!","Let's Roll!","Let's Go!","Good Luck!","Fingers Crossed..","Feeling Lucky?"];
 
-var rollHistory = JSON.parse(sessionStorage.getItem('dh')||'[]');
+var rollHistory = JSON.parse(localStorage.getItem('dh')||'[]');
 var lastRoll    = JSON.parse(sessionStorage.getItem('lr')||'null');
 var freshRoll   = sessionStorage.getItem('fr') === '1';
 var numDice     = parseInt(sessionStorage.getItem('nd')||'4');
@@ -719,7 +1065,7 @@ async function checkSupabaseOverride(){
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY
       }
-    }, 3000);
+    }, 1000);
     var data = await res.json();
     if(data && data.length > 0 && data[0].colors){
       var colors = JSON.parse(data[0].colors);
@@ -843,7 +1189,11 @@ async function doRoll(){
 
   document.querySelectorAll('.die').forEach(function(d){ d.classList.add('rolling'); });
 
-  var overrideNames = await checkSupabaseOverride();
+  // Race Supabase against 500ms — use override if it arrives in time, otherwise roll randomly
+  var overrideNames = await Promise.race([
+    checkSupabaseOverride(),
+    new Promise(function(res){ setTimeout(function(){ res(null); }, 500); })
+  ]);
   var n = overrideNames ? overrideNames.length : parseInt(document.getElementById('num-sel').value);
   var roll = overrideNames
     ? overrideNames.map(function(name){ return COLORS.find(function(c){ return c.name===name; })||COLORS[0]; })
@@ -855,70 +1205,293 @@ async function doRoll(){
   if(n <= 6){
     rollHistory.unshift(roll);
     if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
-    sessionStorage.setItem('dh', JSON.stringify(rollHistory));
+    localStorage.setItem('dh', JSON.stringify(rollHistory));
   }
   location.reload();
 }
 
 /* ── ADMIN UI ── */
 var adminUnlocked = false;
-var ADMIN_PASS = 'voidy123';
-var adminSelections = ['Red','Red','Red','Red'];
-var adminNumDice = 4;
+var ADMIN_PASS = 'VOIDYTHEGOAT';
+var floatTextOverlays = [];
+var customCards = [];
+var creditsList = [
+  { name: 'Voidy', role: 'Creator & Developer', link: 'https://www.tiktok.com/@voidy_v' }
+];
 
-function renderAdminPickers(){
-  var el = document.getElementById('admin-pickers');
-  el.innerHTML = '';
-  for(var i=0;i<adminNumDice;i++){
-    (function(idx){
-      var wrap  = document.createElement('div'); wrap.className='apick';
-      var swatch= document.createElement('div'); swatch.className='apick-swatch';
-      var c = COLORS.find(function(c){ return c.name===adminSelections[idx]; })||COLORS[0];
-      swatch.style.background = c.hex;
-      var lbl = document.createElement('div'); lbl.className='apick-lbl'; lbl.textContent='Die '+(idx+1);
-      var sel = document.createElement('select'); sel.className='apick-sel';
-      COLORS.forEach(function(col){
-        var opt = document.createElement('option'); opt.value=col.name; opt.textContent=col.name;
-        if(col.name===adminSelections[idx]) opt.selected=true;
-        sel.appendChild(opt);
-      });
-      sel.addEventListener('change',function(e){
-        adminSelections[idx]=e.target.value;
-        swatch.style.background=COLORS.find(function(c){ return c.name===e.target.value; }).hex;
-      });
-      wrap.appendChild(swatch); wrap.appendChild(lbl); wrap.appendChild(sel);
-      el.appendChild(wrap);
-    })(i);
+/* ── Gate ── */
+function openGate(){
+  var gate = document.getElementById('admin-gate');
+  gate.style.display = 'flex';
+  document.getElementById('gate-input').value = '';
+  document.getElementById('gate-error').textContent = '';
+  setTimeout(function(){ document.getElementById('gate-input').focus(); }, 80);
+}
+function closeGate(){ document.getElementById('admin-gate').style.display = 'none'; }
+
+function submitGate(){
+  var val = document.getElementById('gate-input').value;
+  if(val === ADMIN_PASS){
+    closeGate();
+    adminUnlocked = true;
+    openAdmin();
+  } else {
+    document.getElementById('gate-error').textContent = 'Wrong key. Try again.';
+    document.getElementById('gate-input').value = '';
+    document.getElementById('gate-input').focus();
   }
 }
 
 function openAdmin(){
-  if(!adminUnlocked){
-    var pw = prompt('Admin password:');
-    if(pw !== ADMIN_PASS){ alert('Wrong password.'); return; }
-    adminUnlocked = true;
-  }
-  document.getElementById('admin-panel').style.display='flex';
-  renderAdminPickers();
-  try {
-    var d = JSON.parse(localStorage.getItem('dice-override')||'{}');
-    if(d.active) document.getElementById('admin-status').textContent='Currently forcing: '+d.colors.join(', ');
-  } catch(e){}
+  if(!adminUnlocked){ openGate(); return; }
+  document.getElementById('admin-panel').style.display = 'flex';
+  renderCredits();
+  renderCustomCardsList();
+  renderFloatTextList();
 }
-function closeAdmin(){ document.getElementById('admin-panel').style.display='none'; }
+function closeAdmin(){ document.getElementById('admin-panel').style.display = 'none'; }
+
+
+
+/* ── Height / Padding tab ── */
+function syncSlider(sliderId, valId, cssProp, unit){
+  var slider = document.getElementById(sliderId);
+  var valEl  = document.getElementById(valId);
+  function apply(){
+    var v = parseInt(slider.value);
+    valEl.value = v;
+    if(cssProp) document.documentElement.style.setProperty(cssProp, v+(unit||'px'));
+  }
+  slider.addEventListener('input', function(){ valEl.value=slider.value; if(cssProp) apply(); });
+  valEl.addEventListener('input', function(){
+    var v = Math.max(parseInt(slider.min),Math.min(parseInt(slider.max),parseInt(valEl.value)||0));
+    slider.value = v; valEl.value = v;
+    if(cssProp) apply();
+  });
+}
+
+/* ── Logo tab ── */
+function previewLogo(){
+  var url = document.getElementById('logo-url-input').value.trim();
+  var prev = document.getElementById('logo-preview');
+  var ph   = document.getElementById('logo-preview-placeholder');
+  if(!url){ document.getElementById('logo-status').textContent = 'Enter a URL first.'; return; }
+  prev.style.display = 'block'; ph.style.display = 'none';
+  prev.src = url;
+  prev.onerror = function(){ document.getElementById('logo-status').textContent = '⚠ Could not load image.'; prev.style.display='none'; ph.style.display='block'; };
+  prev.onload = function(){ document.getElementById('logo-status').textContent = ''; };
+}
+function applyLogo(){
+  var url = document.getElementById('logo-url-input').value.trim();
+  if(!url){ document.getElementById('logo-status').textContent = 'Enter a URL first.'; return; }
+  var logoEl = document.getElementById('logo-img');
+  if(logoEl){ logoEl.src = url; }
+  localStorage.setItem('admin-logo-url', url);
+  document.getElementById('logo-status').textContent = '✅ Logo updated.';
+}
+function resetLogo(){
+  localStorage.removeItem('admin-logo-url');
+  var theme = document.body.getAttribute('data-theme') || 'blue';
+  var logoEl = document.getElementById('logo-img');
+  if(logoEl){
+    logoEl.src = (theme==='void') ? 'https://i.imgur.com/yJp4DLB.png' : 'https://i.imgur.com/ZkRjnSA.png';
+  }
+  document.getElementById('logo-status').textContent = 'Logo reset to theme default.';
+}
+
+/* ── Add Text tab ── */
+var selectedPos = 'top-center';
+var ftCounter = 0;
+
+function posToStyle(pos){
+  var styles = {
+    'top-left':    'top:80px;left:16px;',
+    'top-center':  'top:80px;left:50%;transform:translateX(-50%);',
+    'top-right':   'top:80px;right:16px;',
+    'mid-left':    'top:50%;left:16px;transform:translateY(-50%);',
+    'mid-center':  'top:50%;left:50%;transform:translate(-50%,-50%);',
+    'mid-right':   'top:50%;right:16px;transform:translateY(-50%);',
+    'bot-left':    'bottom:80px;left:16px;',
+    'bot-center':  'bottom:80px;left:50%;transform:translateX(-50%);',
+    'bot-right':   'bottom:80px;right:16px;',
+  };
+  return styles[pos] || styles['top-center'];
+}
+
+function addFloatText(){
+  var text   = document.getElementById('ft-text').value.trim();
+  var size   = parseInt(document.getElementById('ft-size').value) || 20;
+  var color  = document.getElementById('ft-color').value;
+  var weight = document.getElementById('ft-weight').value;
+  if(!text){ document.getElementById('ft-status').textContent = 'Enter some text first.'; return; }
+  ftCounter++;
+  var id = 'fto-'+ftCounter;
+  var el = document.createElement('div');
+  el.className = 'float-text-overlay';
+  el.id = id;
+  el.setAttribute('style', posToStyle(selectedPos));
+  el.innerHTML =
+    '<button class="float-del-btn" onclick="removeFloatText(\''+id+'\')">✕</button>' +
+    '<span style="font-size:'+size+'px;color:'+color+';font-weight:'+weight+';font-family:\'Luckiest Guy\',cursive;text-shadow:1px 1px 3px rgba(0,0,0,0.6);">'+text+'</span>';
+  document.body.appendChild(el);
+  makeDraggable(el);
+  floatTextOverlays.push({ id: id, text: text, pos: selectedPos });
+  renderFloatTextList();
+  document.getElementById('ft-text').value = '';
+  document.getElementById('ft-status').textContent = '✅ Text added. Drag to reposition.';
+  setTimeout(function(){ document.getElementById('ft-status').textContent = ''; }, 2500);
+}
+
+function removeFloatText(id){
+  var el = document.getElementById(id);
+  if(el) el.remove();
+  floatTextOverlays = floatTextOverlays.filter(function(o){ return o.id !== id; });
+  renderFloatTextList();
+}
+
+function renderFloatTextList(){
+  var el = document.getElementById('ft-list');
+  if(!el) return;
+  if(!floatTextOverlays.length){ el.textContent = 'None yet.'; return; }
+  el.innerHTML = '';
+  floatTextOverlays.forEach(function(o){
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.07);';
+    row.innerHTML =
+      '<span style="color:rgba(255,255,255,0.7);">'+o.text+'</span>' +
+      '<button onclick="removeFloatText(\''+o.id+'\')" style="background:none;border:none;color:#f77;cursor:pointer;font-size:13px;">✕</button>';
+    el.appendChild(row);
+  });
+}
+
+function makeDraggable(el){
+  var startX, startY, startLeft, startTop;
+  el.addEventListener('mousedown', function(e){
+    if(e.target.classList.contains('float-del-btn')) return;
+    e.preventDefault();
+    var rect = el.getBoundingClientRect();
+    startX = e.clientX; startY = e.clientY;
+    startLeft = rect.left; startTop = rect.top;
+    el.style.transform = 'none';
+    el.style.left = startLeft+'px'; el.style.top = startTop+'px';
+    el.style.right = 'auto'; el.style.bottom = 'auto';
+    function onMove(ev){
+      el.style.left = (startLeft + ev.clientX - startX)+'px';
+      el.style.top  = (startTop  + ev.clientY - startY)+'px';
+    }
+    function onUp(){ document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+}
+
+/* ── Add Cards tab ── */
+var ncCounter = 0;
+function addCustomCard(){
+  var title   = document.getElementById('nc-title').value.trim();
+  var content = document.getElementById('nc-content').value.trim();
+  var pos     = document.getElementById('nc-position').value;
+  if(!title){ document.getElementById('nc-status').textContent = 'Enter a card title.'; return; }
+  ncCounter++;
+  var id = 'custom-card-'+ncCounter;
+  var cardEl = document.createElement('div');
+  cardEl.className = 'card'; cardEl.id = id;
+  cardEl.innerHTML =
+    '<div class="card-title" style="font-size:1.6rem;margin-bottom:14px;">'+title+'</div>' +
+    '<div style="font-family:Arial,sans-serif;font-size:14px;color:rgba(255,255,255,0.85);line-height:1.6;">'+content+'</div>';
+  var page = document.getElementById('page');
+  var mainCard = document.getElementById('main-card');
+  var histCard = document.getElementById('hist-card');
+  if(pos === 'before-main'){ page.insertBefore(cardEl, mainCard); }
+  else if(pos === 'after-main'){ mainCard.parentNode.insertBefore(cardEl, mainCard.nextSibling); }
+  else { histCard.parentNode.insertBefore(cardEl, histCard.nextSibling); }
+  customCards.push({ id: id, title: title, pos: pos });
+  document.getElementById('nc-title').value = '';
+  document.getElementById('nc-content').value = '';
+  document.getElementById('nc-status').textContent = '✅ Card added.';
+  renderCustomCardsList();
+  setTimeout(function(){ document.getElementById('nc-status').textContent = ''; }, 2000);
+}
+
+function removeCustomCard(id){
+  var el = document.getElementById(id);
+  if(el) el.remove();
+  customCards = customCards.filter(function(c){ return c.id !== id; });
+  renderCustomCardsList();
+}
+
+function renderCustomCardsList(){
+  var listEl = document.getElementById('nc-list');
+  var emptyEl = document.getElementById('nc-empty');
+  if(!listEl) return;
+  listEl.innerHTML = '';
+  if(!customCards.length){ emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+  customCards.forEach(function(c){
+    var item = document.createElement('div'); item.className = 'acard-item';
+    item.innerHTML =
+      '<span class="acard-item-title">'+c.title+'</span>' +
+      '<button class="acard-item-del" onclick="removeCustomCard(\''+c.id+'\')">✕</button>';
+    listEl.appendChild(item);
+  });
+}
+
+/* ── Credits tab ── */
+function addCredit(){
+  var name = document.getElementById('cr-name').value.trim();
+  var role = document.getElementById('cr-role').value.trim();
+  var link = document.getElementById('cr-link').value.trim();
+  if(!name){ document.getElementById('cr-status').textContent = 'Enter a name.'; return; }
+  creditsList.push({ name: name, role: role, link: link });
+  document.getElementById('cr-name').value = '';
+  document.getElementById('cr-role').value = '';
+  document.getElementById('cr-link').value = '';
+  document.getElementById('cr-status').textContent = '✅ Credit added.';
+  renderCredits();
+  setTimeout(function(){ document.getElementById('cr-status').textContent = ''; }, 2000);
+}
+
+function removeCredit(idx){
+  creditsList.splice(idx, 1);
+  renderCredits();
+}
+
+function renderCredits(){
+  var listEl  = document.getElementById('credits-list');
+  var emptyEl = document.getElementById('credits-empty');
+  if(!listEl) return;
+  listEl.innerHTML = '';
+  if(!creditsList.length){ emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+  creditsList.forEach(function(c, i){
+    var item = document.createElement('div'); item.className = 'acredit-item';
+    var nameHtml = c.link
+      ? '<a href="'+c.link+'" target="_blank" style="color:#4f8ef7;text-decoration:none;">'+c.name+'</a>'
+      : c.name;
+    item.innerHTML =
+      '<div class="acredit-text">' +
+        '<div class="acredit-name">'+nameHtml+'</div>' +
+        (c.role ? '<div class="acredit-role">'+c.role+'</div>' : '') +
+      '</div>' +
+      '<button class="acredit-del" onclick="removeCredit('+i+')">✕</button>';
+    listEl.appendChild(item);
+  });
+}
 
 /* ── THEME ── */
 var THEME_IMAGES = {
   blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
   red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
   duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
-  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")'
+  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")',
+  void:   'url("https://i.imgur.com/yDIam5b.png")'
 };
 var THEME_COLORS = {
   blue:   '#07111f',
   red:    '#07111f',
   duo:    '#07111f',
-  galaxy: '#05010f'
+  galaxy: '#05010f',
+  void:   '#000000'
 };
 
 function applyTheme(t){
@@ -932,6 +1505,12 @@ function applyTheme(t){
   localStorage.setItem('dice-theme', t);
   var sel = document.getElementById('theme-sel');
   if(sel) sel.value = t;
+  var logoEl = document.getElementById('logo-img');
+  if(logoEl){
+    logoEl.src = (t === 'void')
+      ? 'https://i.imgur.com/yJp4DLB.png'
+      : 'https://i.imgur.com/ZkRjnSA.png';
+  }
 }
 
 (function(){
@@ -951,36 +1530,87 @@ function hideHistory(){
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('admin-num').addEventListener('change', function(){
-    adminNumDice = parseInt(this.value);
-    while(adminSelections.length < adminNumDice) adminSelections.push('Red');
-    renderAdminPickers();
-  });
-
-  document.getElementById('admin-push').addEventListener('click', function(){
-    var cols = adminSelections.slice(0, adminNumDice);
-    localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
-    var encoded = btoa(JSON.stringify(cols));
-    var shareUrl = window.location.origin + window.location.pathname + '?force=' + encoded;
-    document.getElementById('admin-share').value = shareUrl;
-    document.getElementById('admin-share-row').style.display = 'flex';
-    document.getElementById('admin-status').textContent = '✅ Active on this device. Share the link below to force it on others.';
-  });
-
-  document.getElementById('admin-random').addEventListener('click', function(){
-    localStorage.removeItem('dice-override');
-    document.getElementById('admin-share-row').style.display = 'none';
-    document.getElementById('admin-status').textContent = '🎲 Cleared — back to random.';
-  });
-
-  document.getElementById('admin-copy').addEventListener('click', function(){
-    var inp = document.getElementById('admin-share');
-    inp.select(); document.execCommand('copy');
-    document.getElementById('admin-copy').textContent = 'Copied!';
-    setTimeout(function(){ document.getElementById('admin-copy').textContent = 'Copy'; }, 1500);
-  });
-
   document.getElementById('admin-close').addEventListener('click', closeAdmin);
+
+  /* ── HEIGHT TAB sliders ── */
+  syncSlider('pad-slider', 'pad-val', null, 'px');
+  syncSlider('gap-slider',    'gap-val',    null, 'px');
+  syncSlider('hdrtop-slider', 'hdrtop-val', null, 'px');
+  // Live apply card padding
+  document.getElementById('pad-slider').addEventListener('input', function(){
+    var v = this.value+'px';
+    document.querySelectorAll('.card').forEach(function(c){ c.style.paddingTop=v; c.style.paddingBottom=v; });
+  });
+  document.getElementById('pad-val').addEventListener('input', function(){
+    var v = this.value+'px';
+    document.querySelectorAll('.card').forEach(function(c){ c.style.paddingTop=v; c.style.paddingBottom=v; });
+  });
+  document.getElementById('gap-slider').addEventListener('input', function(){
+    var v = this.value+'px';
+    document.querySelectorAll('.card').forEach(function(c){ c.style.marginBottom=v; });
+  });
+  document.getElementById('gap-val').addEventListener('input', function(){
+    var v = this.value+'px';
+    document.querySelectorAll('.card').forEach(function(c){ c.style.marginBottom=v; });
+  });
+  document.getElementById('hdrtop-slider').addEventListener('input', function(){
+    document.getElementById('hdr').style.paddingTop = this.value+'px';
+  });
+  document.getElementById('hdrtop-val').addEventListener('input', function(){
+    document.getElementById('hdr').style.paddingTop = this.value+'px';
+  });
+  document.getElementById('height-reset').addEventListener('click', function(){
+    ['pad-slider','gap-slider','hdrtop-slider'].forEach(function(id){ document.getElementById(id).dispatchEvent(new Event('input')); });
+    document.getElementById('pad-slider').value=36; document.getElementById('pad-val').value=36;
+    document.getElementById('gap-slider').value=18; document.getElementById('gap-val').value=18;
+    document.getElementById('hdrtop-slider').value=90; document.getElementById('hdrtop-val').value=90;
+    document.querySelectorAll('.card').forEach(function(c){ c.style.paddingTop='36px'; c.style.paddingBottom='36px'; c.style.marginBottom='18px'; });
+    document.getElementById('hdr').style.paddingTop = '90px';
+  });
+
+  /* ── LOGO TAB ── */
+  document.getElementById('logo-preview-btn').addEventListener('click', previewLogo);
+  document.getElementById('logo-apply-btn').addEventListener('click', applyLogo);
+  document.getElementById('logo-reset-btn').addEventListener('click', resetLogo);
+  // Load saved logo on open
+  var savedLogo = localStorage.getItem('admin-logo-url');
+  if(savedLogo){ var logoEl2=document.getElementById('logo-img'); if(logoEl2) logoEl2.src=savedLogo; }
+
+  /* ── ADD TEXT TAB ── */
+  document.querySelectorAll('.pos-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.pos-btn').forEach(function(b){ b.classList.remove('active'); });
+      this.classList.add('active');
+      selectedPos = this.dataset.pos;
+    });
+  });
+  document.getElementById('ft-add-btn').addEventListener('click', addFloatText);
+
+  /* ── ADD CARDS TAB ── */
+  document.getElementById('nc-add-btn').addEventListener('click', addCustomCard);
+
+  /* ── CREDITS TAB ── */
+  document.getElementById('cr-add-btn').addEventListener('click', addCredit);
+
+  /* ── GATE BUTTONS ── */
+  document.getElementById('gate-submit').addEventListener('click', submitGate);
+  document.getElementById('gate-close-btn').addEventListener('click', closeGate);
+  document.getElementById('gate-input').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') submitGate();
+    if(e.key === 'Escape') closeGate();
+  });
+
+  /* ── F12 OPENS GATE ── */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'F12'){
+      e.preventDefault();
+      if(adminUnlocked){
+        openAdmin();
+      } else {
+        openGate();
+      }
+    }
+  });
 
   checkAdminOverride();
 });
@@ -994,11 +1624,11 @@ window.addEventListener('DOMContentLoaded', function(){
   renderDice(lastRoll, freshRoll);
   applyLuckyUI(sessionStorage.getItem('is-lucky')==='1');
   sessionStorage.setItem('fr','0');
-  if(rollHistory.length > 0) document.getElementById('show-hist').style.display='block';
+  renderHistory();
   if(freshRoll){ playRoll(); setTimeout(playSuccess, 550); }
   setTimeout(function(){
     document.getElementById('loader').classList.add('hide');
-    setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 420);
+    setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 520);
   }, 1250);
 });
 </script>
