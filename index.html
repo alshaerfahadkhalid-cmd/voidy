@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>4 Color Dice — Roll 6-Sided Color Dice | Online-Dice.com</title>
+<title>Color Dice Roller</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
@@ -68,14 +68,8 @@ body {
   font-family: 'Luckiest Guy', cursive;
   font-size: 3.8rem; color: #fff;
   text-shadow:
-    2px 0 0 #000,
-    -2px 0 0 #000,
-    0 2px 0 #000,
-    0 -2px 0 #000,
-    1px 1px 0 #000,
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
+    2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000,
+    1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     4px 4px 0 #000;
   letter-spacing: 0.06em;
 }
@@ -87,9 +81,6 @@ body {
   border: 4px solid #000;
   animation: ldShake 0.4s ease-in-out 1 both;
 }
-.ld-die:nth-child(2){animation-delay:0s}
-.ld-die:nth-child(3){animation-delay:0s}
-.ld-die:nth-child(4){animation-delay:0s}
 .ld-dot { width:20px; height:20px; border-radius:50%; background:#000; }
 @keyframes ldShake {
   0%   { transform: translate(0,0) rotate(0deg); }
@@ -106,7 +97,7 @@ body {
 }
 
 /* ── PAGE ── */
-#page { max-width: 720px; margin: 0 auto; padding: 0 16px 80px; }
+#page { max-width: 720px; margin: 0 auto; padding: 62px 16px 80px; }
 
 /* ── HEADER ── */
 #hdr {
@@ -127,14 +118,8 @@ body {
   font-size: 2rem; letter-spacing: 0.22em;
   color: #fff;
   text-shadow:
-    2px 0 0 #000,
-    -2px 0 0 #000,
-    0 2px 0 #000,
-    0 -2px 0 #000,
-    1px 1px 0 #000,
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
+    2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000,
+    1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     3px 3px 0 #000;
   margin-bottom: 12px;
 }
@@ -148,14 +133,10 @@ body {
   margin-bottom: 18px;
   transition: background 0.4s ease, border-color 0.4s ease;
 }
-
-/* DUO theme — brownish card tint */
 body[data-theme="duo"] .card {
   background: rgba(110, 65, 20, 0.52);
   border-color: rgba(195, 148, 72, 0.62);
 }
-
-/* GALAXY theme — deep purple card tint */
 body[data-theme="galaxy"] .card {
   background: rgba(60, 20, 100, 0.48);
   border-color: rgba(180, 120, 255, 0.55);
@@ -168,14 +149,8 @@ body[data-theme="galaxy"] .card {
   font-size: 1.6rem; letter-spacing: 0.12em;
   color: #fff;
   text-shadow:
-    2px 0 0 #1e88e5,
-    -2px 0 0 #1e88e5,
-    0 2px 0 #1e88e5,
-    0 -2px 0 #1e88e5,
-    1px 1px 0 #1e88e5,
-    -1px -1px 0 #1e88e5,
-    1px -1px 0 #1e88e5,
-    -1px 1px 0 #1e88e5,
+    2px 0 0 #1e88e5, -2px 0 0 #1e88e5, 0 2px 0 #1e88e5, 0 -2px 0 #1e88e5,
+    1px 1px 0 #1e88e5, -1px -1px 0 #1e88e5, 1px -1px 0 #1e88e5, -1px 1px 0 #1e88e5,
     3px 3px 0 #1565c0;
   margin-bottom: 18px;
 }
@@ -201,9 +176,7 @@ body[data-theme="galaxy"] .card {
   background-position: right 12px center;
   transition: background-color 0.15s, transform 0.08s, box-shadow 0.08s;
 }
-.selects select:hover {
-  background-color: #f0f6ff;
-}
+.selects select:hover { background-color: #f0f6ff; }
 .selects select:active {
   transform: translateY(3px);
   box-shadow: 0 1px 0 rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,60,0.18);
@@ -232,9 +205,7 @@ body[data-theme="galaxy"] .card {
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
   border: 5px solid #fff;
-  box-shadow:
-    0 6px 0 rgba(0,0,0,0.18),
-    0 8px 20px rgba(0,0,80,0.2);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.18), 0 8px 20px rgba(0,0,80,0.2);
   flex-shrink: 0;
   transition: transform 0.06s;
   cursor: default;
@@ -242,21 +213,21 @@ body[data-theme="galaxy"] .card {
 .die:hover { transform: scale(1.06); }
 .die.rolling { animation: dieR 1s ease both; }
 @keyframes dieR {
-  0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
-  8%   { transform: translate(-6px, -4px) rotate(-8deg) scale(1.08); }
-  16%  { transform: translate(6px, 4px) rotate(8deg) scale(0.94); }
-  24%  { transform: translate(-8px, 3px) rotate(-12deg) scale(1.1); }
-  32%  { transform: translate(7px, -5px) rotate(10deg) scale(0.92); }
-  40%  { transform: translate(-5px, 6px) rotate(-9deg) scale(1.07); }
-  48%  { transform: translate(8px, -3px) rotate(11deg) scale(0.95); }
-  56%  { transform: translate(-6px, 4px) rotate(-7deg) scale(1.05); }
-  64%  { transform: translate(4px, -6px) rotate(6deg) scale(0.97); }
-  72%  { transform: translate(-3px, 3px) rotate(-4deg) scale(1.02); }
-  82%  { transform: translate(2px, -2px) rotate(2deg) scale(0.99); }
-  100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  0%   { transform: translate(0,0) rotate(0deg) scale(1); }
+  8%   { transform: translate(-6px,-4px) rotate(-8deg) scale(1.08); }
+  16%  { transform: translate(6px,4px) rotate(8deg) scale(0.94); }
+  24%  { transform: translate(-8px,3px) rotate(-12deg) scale(1.1); }
+  32%  { transform: translate(7px,-5px) rotate(10deg) scale(0.92); }
+  40%  { transform: translate(-5px,6px) rotate(-9deg) scale(1.07); }
+  48%  { transform: translate(8px,-3px) rotate(11deg) scale(0.95); }
+  56%  { transform: translate(-6px,4px) rotate(-7deg) scale(1.05); }
+  64%  { transform: translate(4px,-6px) rotate(6deg) scale(0.97); }
+  72%  { transform: translate(-3px,3px) rotate(-4deg) scale(1.02); }
+  82%  { transform: translate(2px,-2px) rotate(2deg) scale(0.99); }
+  100% { transform: translate(0,0) rotate(0deg) scale(1); }
 }
 
-/* small dot */
+/* ── DIE DOT ── */
 .die-dot {
   border-radius: 50%;
   background: rgba(255,255,255,0.95);
@@ -265,7 +236,7 @@ body[data-theme="galaxy"] .card {
   flex-shrink: 0;
 }
 
-/* sizes */
+/* ── DIE SIZES ── */
 .die-xl  { width:100px; height:100px; border-radius:18px; }
 .die-xl  .die-dot { width:18px; height:18px; }
 .die-lg  { width:86px;  height:86px;  border-radius:16px; }
@@ -285,17 +256,8 @@ body[data-theme="galaxy"] .card {
   color: rgba(255,255,255,0.95); font-family: 'Luckiest Guy', cursive;
   background: rgba(180,210,255,0.18);
   border-radius: 6px; padding: 5px 8px;
-  margin: 2px 0 5px;
+  margin: 2px 0 14px;
 }
-
-/* ── CHANCES LINK ── */
-.chances {
-  display: block; text-align: center;
-  font-size: 13px; color: rgba(255,255,255,0.82);
-  text-decoration: underline; margin-bottom: 16px;
-  font-family: Arial,sans-serif;
-}
-.chances:hover { color:#fff; }
 
 /* ── ROLL BUTTON ── */
 #roll-btn {
@@ -310,14 +272,8 @@ body[data-theme="galaxy"] .card {
   font-size: 1.6rem; letter-spacing: 0.1em;
   text-align: center; cursor: pointer;
   text-shadow:
-    2px 0 0 #fff,
-    -2px 0 0 #fff,
-    0 2px 0 #fff,
-    0 -2px 0 #fff,
-    1px 1px 0 #fff,
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff;
+    2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
   box-shadow: 0 5px 0 #000, 0 8px 18px rgba(0,0,0,0.4);
   transition: transform 0.08s, box-shadow 0.08s;
   user-select: none; text-decoration: none;
@@ -343,12 +299,6 @@ body[data-theme="galaxy"] .card {
   text-shadow: 1px 1px 0 #9a6000, 2px 3px 5px rgba(0,0,60,0.22);
   margin-bottom: 10px;
 }
-.sec-body {
-  font-size: 13.5px; color: rgba(255,255,255,0.93);
-  line-height: 1.68; font-family: Arial,sans-serif;
-}
-.sec-body p{margin-bottom:8px;}
-.sec-body a{color:#ffd700;}
 
 /* ── HISTORY ── */
 #hist-card{display:none;}
@@ -362,27 +312,6 @@ body[data-theme="galaxy"] .card {
 .hist-ddot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.95);box-shadow:0 1px 3px rgba(0,0,0,0.25);}
 .hist-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,0.52);margin-left:3px;font-family:Arial,sans-serif;}
 .hist-note{font-size:12px;color:rgba(255,255,255,0.4);margin-top:8px;font-family:Arial,sans-serif;}
-
-/* ── BLOG ── */
-.blog-item{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:12px 14px;margin-bottom:9px;}
-.blog-item-t a{font-size:14px;font-weight:800;color:#fff;text-decoration:none;font-family:Arial,sans-serif;}
-.blog-item-t a:hover{color:#ffd700;}
-.blog-item-e{font-size:12.5px;color:rgba(255,255,255,0.65);margin-top:5px;line-height:1.5;font-family:Arial,sans-serif;}
-.blog-rm{text-align:right;margin-top:7px;}
-.blog-rm a{font-size:12px;font-weight:800;color:#ffd700;text-decoration:none;border:1.5px solid rgba(255,215,0,0.5);padding:4px 11px;border-radius:7px;font-family:Arial,sans-serif;}
-.blog-rm a:hover{background:rgba(255,215,0,0.14);}
-
-/* ── FOOTER ── */
-#footer{background:rgba(0,0,0,0.25);border-top:1px solid rgba(255,255,255,0.12);padding:22px 16px 30px;text-align:center;margin-top:6px;}
-.ft-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:11px;}
-.ft-nav a{color:rgba(255,255,255,0.72);text-decoration:none;font-size:12px;font-weight:700;font-family:Arial,sans-serif;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.22);}
-.ft-nav a:hover{background:rgba(255,255,255,0.1);color:#fff;}
-.ft-links{margin-bottom:10px;}
-.ft-links a{color:rgba(255,255,255,0.42);text-decoration:underline;margin:0 7px;font-size:12px;font-family:Arial,sans-serif;}
-.ft-links a:hover{color:#fff;}
-#lang-sel{padding:7px 14px;border-radius:9px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:13px;font-weight:700;font-family:Arial,sans-serif;margin-bottom:10px;cursor:pointer;}
-#lang-sel option{background:#0055bb;}
-.copy{font-size:11px;color:rgba(255,255,255,0.32);font-family:Arial,sans-serif;}
 
 /* ── TOP BANNER ── */
 #top-banner {
@@ -399,15 +328,9 @@ body[data-theme="galaxy"] .card {
   backdrop-filter: blur(6px);
   border-bottom: 2px solid rgba(255,215,0,0.4);
   text-shadow:
-    2px 0 0 #b87800,
-    -2px 0 0 #b87800,
-    0 2px 0 #b87800,
-    0 -2px 0 #b87800,
+    2px 0 0 #b87800, -2px 0 0 #b87800, 0 2px 0 #b87800, 0 -2px 0 #b87800,
     0 0 18px rgba(255,215,0,0.7);
 }
-
-/* push page content down so banner doesn't overlap */
-#page { padding-top: 62px; }
 
 /* ── QUOTE ── */
 #quote-block {
@@ -421,10 +344,8 @@ body[data-theme="galaxy"] .card {
   font-size: 1.35rem;
   color: #fff;
   text-shadow:
-    0 0 8px rgba(255,215,0,0.9),
-    0 0 20px rgba(255,215,0,0.5),
-    0 0 40px rgba(255,180,0,0.3),
-    2px 2px 0 rgba(0,0,0,0.4);
+    0 0 8px rgba(255,215,0,0.9), 0 0 20px rgba(255,215,0,0.5),
+    0 0 40px rgba(255,180,0,0.3), 2px 2px 0 rgba(0,0,0,0.4);
   letter-spacing: 0.03em;
   animation: quoteGlow 3s ease-in-out infinite alternate;
 }
@@ -447,11 +368,38 @@ body[data-theme="galaxy"] .card {
   to   { text-shadow: 0 0 14px rgba(255,215,0,1), 0 0 35px rgba(255,215,0,0.8), 0 0 60px rgba(255,180,0,0.5), 2px 2px 0 rgba(0,0,0,0.4); }
 }
 
-@media(max-width:520px){
-  .selects{flex-direction:column;}
-  #roll-btn{font-size:1.3rem;}
-  .card-title{font-size:1.35rem;}
-  #hdr{margin-bottom:80px;}
+/* ── FLOATING SOCIALS ── */
+#socials-float {
+  position: fixed;
+  top: 72px; left: 16px; z-index: 9998;
+  display: flex; flex-direction: column; gap: 8px;
+  animation: socialsFloat 4s ease-in-out infinite;
+}
+@keyframes socialsFloat {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-7px); }
+  100% { transform: translateY(0px); }
+}
+.social-item {
+  display: flex; align-items: center;
+  text-decoration: none; transition: transform 0.18s;
+}
+.social-item:hover { transform: scale(1.07); }
+.social-text {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.55rem; letter-spacing: 0.08em; line-height: 1.2;
+}
+.social-tiktok .social-text {
+  background: linear-gradient(135deg, #000 0%, #fff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.social-discord .social-text {
+  background: linear-gradient(135deg, #5865f2 0%, #fff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(88,101,242,0.5));
 }
 
 /* ── ADMIN PANEL ── */
@@ -509,53 +457,11 @@ body[data-theme="galaxy"] .card {
   color: rgba(255,255,255,0.7); font-family: Arial,sans-serif; font-size: 13px;
 }
 #admin-random:hover { background: rgba(255,255,255,0.14); color: #fff; }
-/* ── FLOATING SOCIALS ── */
-#socials-float {
-  position: fixed;
-  top: 72px;
-  left: 16px;
-  z-index: 9998;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  animation: socialsFloat 4s ease-in-out infinite;
-}
-@keyframes socialsFloat {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-7px); }
-  100% { transform: translateY(0px); }
-}
-.social-item {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: transform 0.18s;
-}
-.social-item:hover {
-  transform: scale(1.07);
-}
-.social-text {
-  font-family: 'Luckiest Guy', cursive;
-  font-size: 1.55rem;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-}
-.social-tiktok .social-text {
-  background: linear-gradient(135deg, #000000 0%, #ffffff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
-}
-.social-discord .social-text {
-  background: linear-gradient(135deg, #5865f2 0%, #ffffff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(88,101,242,0.5));
-}
-
 #admin-status { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.5); font-family: Arial,sans-serif; min-height: 18px; }
+#admin-share-row { display: none; margin-top: 12px; display: none; gap: 8px; align-items: center; }
+#admin-share { flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18); border-radius: 7px; color: #ccc; font-size: 11px; padding: 6px 9px; font-family: Arial,sans-serif; }
+#admin-copy { padding: 6px 12px; border-radius: 7px; background: #333; color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 12px; font-family: Arial,sans-serif; }
+#admin-copy:hover { background: #444; }
 
 /* ── LUCKY ROLL STATE ── */
 .lucky-card {
@@ -564,25 +470,17 @@ body[data-theme="galaxy"] .card {
 }
 .lucky-title {
   text-shadow:
-    2px 0 0 #b87800, -2px 0 0 #b87800,
-    0 2px 0 #b87800,  0 -2px 0 #b87800,
-    1px 1px 0 #b87800, -1px -1px 0 #b87800,
-    1px -1px 0 #b87800, -1px 1px 0 #b87800,
+    2px 0 0 #b87800, -2px 0 0 #b87800, 0 2px 0 #b87800, 0 -2px 0 #b87800,
+    1px 1px 0 #b87800, -1px -1px 0 #b87800, 1px -1px 0 #b87800, -1px 1px 0 #b87800,
     3px 3px 0 #7a4f00 !important;
 }
 .die.die-lucky {
   background: #fff !important;
   border: 5px solid #d49008 !important;
-  box-shadow:
-    0 6px 0 rgba(100,65,0,0.28),
-    0 8px 20px rgba(200,145,0,0.28),
-    0 0 16px rgba(255,200,0,0.35) !important;
+  box-shadow: 0 6px 0 rgba(100,65,0,0.28), 0 8px 20px rgba(200,145,0,0.28), 0 0 16px rgba(255,200,0,0.35) !important;
 }
 .die-star {
-  line-height: 1;
-  user-select: none;
-  pointer-events: none;
-  display: block;
+  line-height: 1; user-select: none; pointer-events: none; display: block;
   filter: drop-shadow(0 1px 3px rgba(160,100,0,0.45));
 }
 .die-xl  .die-star { font-size: 52px; }
@@ -603,7 +501,7 @@ body[data-theme="galaxy"] .card {
   color: #5c3800;
   text-shadow:
     1px 0 0 rgba(255,255,255,0.32), -1px 0 0 rgba(255,255,255,0.32),
-    0 1px 0 rgba(255,255,255,0.32),  0 -1px 0 rgba(255,255,255,0.32);
+    0 1px 0 rgba(255,255,255,0.32), 0 -1px 0 rgba(255,255,255,0.32);
   border-color: rgba(255,255,255,0.82);
   box-shadow: 0 5px 0 #7a4c00, 0 8px 18px rgba(180,100,0,0.48);
 }
@@ -618,8 +516,7 @@ body[data-theme="galaxy"] .card {
   display: none;
   text-align: center;
   font-family: 'Luckiest Guy', cursive;
-  font-size: 0.88rem;
-  letter-spacing: 0.12em;
+  font-size: 0.88rem; letter-spacing: 0.12em;
   color: rgba(255,215,0,0.82);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
   margin-top: 10px;
@@ -627,7 +524,22 @@ body[data-theme="galaxy"] .card {
 }
 @keyframes luckyBadgeFade {
   from { opacity:0; transform: translateY(6px); }
-  to   { opacity:1; transform: translateY(0);   }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── THEMES ── */
+var THEME_IMAGES = {
+  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
+  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
+  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
+  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")'
+};
+
+@media(max-width:520px){
+  .selects{flex-direction:column;}
+  #roll-btn{font-size:1.3rem;}
+  .card-title{font-size:1.35rem;}
+  #hdr{margin-bottom:80px;}
 }
 </style>
 </head>
@@ -665,6 +577,34 @@ body[data-theme="galaxy"] .card {
   </div>
 </div>
 
+<!-- Admin panel -->
+<button id="admin-trigger" onclick="openAdmin()">⚙</button>
+<div id="admin-panel">
+  <div id="admin-box">
+    <h2>Admin Override</h2>
+    <div class="admin-sub">Force a specific roll result for all users.</div>
+    <button id="admin-close">✕</button>
+    <div id="admin-num-row">
+      <label>Number of dice:</label>
+      <select id="admin-num">
+        <option value="1">1</option><option value="2">2</option>
+        <option value="3">3</option><option value="4" selected>4</option>
+        <option value="5">5</option><option value="6">6</option>
+      </select>
+    </div>
+    <div id="admin-pickers"></div>
+    <div id="admin-btns">
+      <button id="admin-push">Push Override</button>
+      <button id="admin-random">Clear</button>
+    </div>
+    <div id="admin-share-row">
+      <input id="admin-share" type="text" readonly/>
+      <button id="admin-copy">Copy</button>
+    </div>
+    <div id="admin-status"></div>
+  </div>
+</div>
+
 <div id="page">
 
   <div id="hdr">
@@ -683,6 +623,7 @@ body[data-theme="galaxy"] .card {
 
   <div class="card" id="main-card">
     <div class="card-title" id="main-card-title">Roll Color Dice</div>
+
     <div class="selects">
       <select id="num-sel" autocomplete="off">
         <option value="1">1 die</option><option value="2">2 dice</option>
@@ -696,22 +637,10 @@ body[data-theme="galaxy"] .card {
         <option value="40">40 dice</option><option value="50">50 dice</option>
         <option value="75">75 dice</option><option value="100">100 dice</option>
       </select>
-      <select id="type-sel" autocomplete="off">
-        <option value="d4">4-sided</option>
-        <option value="d6">6-sided</option>
-        <option value="d8">8-sided</option>
-        <option value="d10">10-sided</option>
-        <option value="d12">12-sided</option>
-        <option value="d20">20-sided</option>
-        <option value="color-dice" selected>Color Dice</option>
-        <option value="perya-color-game">Perya Dice</option>
-      </select>
       <select id="theme-sel" autocomplete="off">
         <option value="blue" selected>Select Theme</option>
         <option value="blue">Blue</option>
-        <option value="green">Green</option>
         <option value="red">Red</option>
-        <option value="bw">B&amp;W</option>
         <option value="duo">DUO</option>
         <option value="galaxy">Galaxy</option>
       </select>
@@ -719,7 +648,7 @@ body[data-theme="galaxy"] .card {
 
     <div id="tabletop"></div>
 
-    <div class="color-hint">Possible colors are:
+    <div class="color-hint">Possible colors:
       <span style="color:#ff4444;font-weight:900;">Red</span>,
       <span style="color:#ff9900;font-weight:900;">Orange</span>,
       <span style="color:#ffd700;font-weight:900;">Yellow</span>,
@@ -727,7 +656,6 @@ body[data-theme="galaxy"] .card {
       <span style="color:#0a0acc;font-weight:900;">Blue</span> and
       <span style="color:#6a0099;font-weight:900;">Purple</span>.
     </div>
-    <a id="chances-lnk" class="chances" href="https://www.online-dice.com/chance-of-winning/4/" target="_blank">See your chances of winning →</a>
 
     <a id="roll-btn" href="#">Roll Again !</a>
     <div id="lucky-badge">🌟 Roll #<span id="lucky-num"></span> — Lucky Roll!</div>
@@ -743,82 +671,10 @@ body[data-theme="galaxy"] .card {
     <div class="hist-note">Note: only dice rolls with up to 6 dice are saved.</div>
   </div>
 
-  <div class="card">
-    <div class="sec-title">How Do These Virtual Dice Work?</div>
-    <div class="sec-body">
-      <p>This website uses virtual dice created with an algorithm that assigns equal probabilities to every possible outcome. By clicking on the 'Roll Again' button you can re-roll all the dice on this page.</p>
-      <p>This page allows you to choose any number of dice between 1 and 100, each having 6 sides and 6 possible colors:
-        <span style="color:#ff4444;font-weight:700;">Red</span>,
-        <span style="color:#ff9900;font-weight:700;">Orange</span>,
-        <span style="color:#ffd700;font-weight:700;">Yellow</span>,
-        <span style="color:#0a6e1e;font-weight:700;">Green</span>,
-        <span style="color:#0a0acc;font-weight:700;">Blue</span> and
-        <span style="color:#6a0099;font-weight:700;">Purple</span>.
-      </p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="sec-title">About Us</div>
-    <div class="sec-body">
-      <p>Online-Dice.com is an online dice simulator that anyone can use to roll virtual dice when no real dice are available. With this free simulator you can roll dice for online games, board games, or any other game of chance.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="sec-title">Blog Posts</div>
-    <div class="blog-item">
-      <div class="blog-item-t"><a href="https://www.online-dice.com/blog/feature-update-roll-history/" target="_blank">Feature update: Roll history</a></div>
-      <div class="blog-item-e">Announcing the release of a new feature — "Roll history". See a history of your last 20 dice rolls.</div>
-      <div class="blog-rm"><a href="https://www.online-dice.com/blog/feature-update-roll-history/" target="_blank">Read More »</a></div>
-    </div>
-    <div class="blog-item">
-      <div class="blog-item-t"><a href="https://www.online-dice.com/blog/the-history-of-dice-and-dice-games/" target="_blank">The History of Dice and Dice Games</a></div>
-      <div class="blog-item-e">Dice have been used as a form of chance-based gaming for thousands of years, dating back to ancient Egypt, Greece, and Rome.</div>
-      <div class="blog-rm"><a href="https://www.online-dice.com/blog/the-history-of-dice-and-dice-games/" target="_blank">Read More »</a></div>
-    </div>
-    <div class="blog-item">
-      <div class="blog-item-t"><a href="https://www.online-dice.com/blog/the-most-popular-dice-games-in-the-world/" target="_blank">The Most Popular Dice Games in the World</a></div>
-      <div class="blog-item-e">Dice games have been a staple of gaming culture for thousands of years and continue to be popular today.</div>
-      <div class="blog-rm"><a href="https://www.online-dice.com/blog/the-most-popular-dice-games-in-the-world/" target="_blank">Read More »</a></div>
-    </div>
-    <div class="blog-item">
-      <div class="blog-item-t"><a href="https://www.online-dice.com/blog/dice-probabilities-part-1/" target="_blank">Dice Probabilities – Part 1</a></div>
-      <div class="blog-item-e">What are the chances of rolling exactly a 4 with a pair of two regular 6-sided dice?</div>
-      <div class="blog-rm"><a href="https://www.online-dice.com/blog/dice-probabilities-part-1/" target="_blank">Read More »</a></div>
-    </div>
-  </div>
-
-</div>
-
-<div id="footer">
-  <div class="ft-nav">
-    <a href="https://www.online-dice.com/">Dice Roller</a>
-    <a href="https://www.online-dice.com/roll-color-dice/">Color Dice</a>
-    <a href="https://www.online-dice.com/perya-color-game/">Perya Color Game</a>
-    <a href="https://www.online-dice.com/roll-monyun-dice/">Monyun Dice</a>
-    <a href="https://www.online-dice.com/what-are-dice/">What Are Dice?</a>
-    <a href="https://www.online-dice.com/dice-games/">Dice Games</a>
-    <a href="https://www.online-dice.com/blog/" target="_blank">Blog</a>
-  </div>
-  <div class="ft-links">
-    <a href="https://www.online-dice.com/">Home</a>
-    <a href="https://www.online-dice.com/privacy/">Privacy Policy</a>
-  </div>
-  <select id="lang-sel">
-    <option value="en" selected>Change Language</option>
-    <option value="de">Deutsch</option>
-    <option value="en">English</option>
-    <option value="es">Español</option>
-    <option value="fr">Français</option>
-    <option value="pl">Polski</option>
-    <option value="pt">Português</option>
-  </select>
-  <div class="copy">© 2026 ONLINE-DICE.COM</div>
 </div>
 
 <script>
-var COLORS=[
+var COLORS = [
   {name:'Red',    hex:'#e52222'},
   {name:'Orange', hex:'#e07820'},
   {name:'Yellow', hex:'#d4b800'},
@@ -826,102 +682,37 @@ var COLORS=[
   {name:'Blue',   hex:'#0a0acc'},
   {name:'Purple', hex:'#6a0099'},
 ];
-var TITLES=["What Color Will It Be?","Rolling..","Color Me Surprised!","Amazing!","Let's Roll!","Let's Go!","Good Luck!","Fingers Crossed..","Feeling Lucky?"];
+var TITLES = ["What Color Will It Be?","Rolling..","Color Me Surprised!","Amazing!","Let's Roll!","Let's Go!","Good Luck!","Fingers Crossed..","Feeling Lucky?"];
 
-var rollHistory=JSON.parse(sessionStorage.getItem('dh')||'[]');
-var lastRoll=JSON.parse(sessionStorage.getItem('lr')||'null');
-var freshRoll=sessionStorage.getItem('fr')==='1';
-var numDice=parseInt(sessionStorage.getItem('nd')||'4');
+var rollHistory = JSON.parse(sessionStorage.getItem('dh')||'[]');
+var lastRoll    = JSON.parse(sessionStorage.getItem('lr')||'null');
+var freshRoll   = sessionStorage.getItem('fr') === '1';
+var numDice     = parseInt(sessionStorage.getItem('nd')||'4');
 
-document.getElementById('num-sel').value=numDice;
-document.getElementById('chances-lnk').href='https://www.online-dice.com/chance-of-winning/'+numDice+'/';
-document.getElementById('loader-title').textContent=TITLES[Math.floor(Math.random()*TITLES.length)];
+document.getElementById('num-sel').value = numDice;
+document.getElementById('loader-title').textContent = TITLES[Math.floor(Math.random()*TITLES.length)];
 
 function makeRoll(n){
-  // Each die is fully independent — equal 1/6 chance per color, repeats allowed.
-  // This matches exactly how online-dice.com works.
   var r=[];
-  for(var i=0;i<n;i++){
-    r.push(COLORS[Math.floor(Math.random()*COLORS.length)]);
-  }
+  for(var i=0;i<n;i++){r.push(COLORS[Math.floor(Math.random()*COLORS.length)]);}
   return r;
 }
-
-async function fetchWithTimeout(url,opts,ms){
-  var controller=new AbortController();
-  var timer=setTimeout(function(){ controller.abort(); },ms);
-  try{
-    var res=await fetch(url,Object.assign({},opts,{signal:controller.signal}));
-    clearTimeout(timer);
-    return res;
-  }catch(e){ clearTimeout(timer); throw e; }
-}
-function dieSize(n){
-  if(n<=2) return 'die-xl';
-  if(n<=4) return 'die-lg';
-  if(n<=9) return 'die-md';
-  if(n<=16)return 'die-sm';
-  if(n<=30)return 'die-xs';
-  return 'die-xxs';
-}
-
-function renderDice(roll,animate){
-  var isLucky = sessionStorage.getItem('is-lucky')==='1';
-  var tt=document.getElementById('tabletop');
-  tt.innerHTML='';
-  var sz=dieSize(roll.length);
-  roll.forEach(function(c){
-    var d=document.createElement('div');
-    d.className='die '+sz+(animate?' rolling':'')+(isLucky?' die-lucky':'');
-    if(!isLucky){
-      d.style.background=c.hex;
-      d.title=c.name;
-    } else {
-      d.title='Lucky Roll!';
-    }
-    if(animate){
-      d.style.opacity='0';
-      setTimeout(function(el){ el.classList.add('die-reveal'); el.style.opacity=''; }, 1670, d);
-    }
-    var inner=document.createElement('div');
-    if(isLucky){
-      inner.className='die-star';
-      inner.textContent='⭐';
-    } else {
-      inner.className='die-dot';
-    }
-    d.appendChild(inner);
-    tt.appendChild(d);
-  });
-}
-
-function renderHistory(){
-  var list=document.getElementById('hist-list');
-  list.innerHTML='';
-  if(!rollHistory.length){list.innerHTML='<div class="hist-note">No rolls yet.</div>';return;}
-  rollHistory.forEach(function(roll,idx){
-    var row=document.createElement('div');row.className='hist-row';
-    var num=document.createElement('div');num.className='hist-num';num.textContent=(idx+1)+'.';
-    row.appendChild(num);
-    roll.forEach(function(c){
-      var dw=document.createElement('div');dw.className='hist-die';dw.style.background=c.hex;
-      var dd=document.createElement('div');dd.className='hist-ddot';
-      dw.appendChild(dd);row.appendChild(dw);
-    });
-    var lbl=document.createElement('div');lbl.className='hist-lbl';
-    lbl.textContent=roll.map(function(c){return c.name;}).join(', ');
-    row.appendChild(lbl);list.appendChild(row);
-  });
-}
-
-function playRoll(){try{var s=document.getElementById('snd-roll');s.currentTime=0;s.play();}catch(e){}}
-function playSuccess(){try{var s=document.getElementById('snd-success');s.currentTime=0;s.play();}catch(e){}}
 
 /* ── SUPABASE ADMIN OVERRIDE ── */
 var SUPABASE_URL = 'https://sqxkecwsvbmzrkqltjsk.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxeGtlY3dzdmJtenJrcWx0anNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzY5MzQsImV4cCI6MjA5NjI1MjkzNH0.cd_d14fUVy8oH0lLWqrepoKfTEGHgRai6QbLjZ-v-Eg';
 
-async function checkSupabaseOverride() {
+async function fetchWithTimeout(url, opts, ms){
+  var controller = new AbortController();
+  var timer = setTimeout(function(){ controller.abort(); }, ms);
+  try {
+    var res = await fetch(url, Object.assign({}, opts, {signal: controller.signal}));
+    clearTimeout(timer);
+    return res;
+  } catch(e){ clearTimeout(timer); throw e; }
+}
+
+async function checkSupabaseOverride(){
   try {
     var res = await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
       headers: {
@@ -930,7 +721,7 @@ async function checkSupabaseOverride() {
       }
     }, 3000);
     var data = await res.json();
-    if (data && data.length > 0 && data[0].colors) {
+    if(data && data.length > 0 && data[0].colors){
       var colors = JSON.parse(data[0].colors);
       await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
         method: 'PATCH',
@@ -943,8 +734,78 @@ async function checkSupabaseOverride() {
       }, 3000);
       return colors;
     }
-  } catch(e) {}
+  } catch(e){}
   return null;
+}
+
+function checkAdminOverride(){
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if(params.has('force')){
+      var cols = JSON.parse(atob(params.get('force')));
+      if(Array.isArray(cols)){
+        localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
+      }
+    }
+  } catch(e){}
+}
+
+function dieSize(n){
+  if(n<=2)  return 'die-xl';
+  if(n<=4)  return 'die-lg';
+  if(n<=9)  return 'die-md';
+  if(n<=16) return 'die-sm';
+  if(n<=30) return 'die-xs';
+  return 'die-xxs';
+}
+
+function renderDice(roll, animate){
+  var isLucky = sessionStorage.getItem('is-lucky') === '1';
+  var tt = document.getElementById('tabletop');
+  tt.innerHTML = '';
+  var sz = dieSize(roll.length);
+  roll.forEach(function(c){
+    var d = document.createElement('div');
+    d.className = 'die ' + sz + (animate?' rolling':'') + (isLucky?' die-lucky':'');
+    if(!isLucky){
+      d.style.background = c.hex;
+      d.title = c.name;
+    } else {
+      d.title = 'Lucky Roll!';
+    }
+    if(animate){
+      d.style.opacity = '0';
+      setTimeout(function(el){ el.classList.add('die-reveal'); el.style.opacity=''; }, 1670, d);
+    }
+    var inner = document.createElement('div');
+    if(isLucky){
+      inner.className = 'die-star';
+      inner.textContent = '⭐';
+    } else {
+      inner.className = 'die-dot';
+    }
+    d.appendChild(inner);
+    tt.appendChild(d);
+  });
+}
+
+function renderHistory(){
+  var list = document.getElementById('hist-list');
+  list.innerHTML = '';
+  if(!rollHistory.length){ list.innerHTML='<div class="hist-note">No rolls yet.</div>'; return; }
+  rollHistory.forEach(function(roll, idx){
+    var row = document.createElement('div'); row.className='hist-row';
+    var num = document.createElement('div'); num.className='hist-num'; num.textContent=(idx+1)+'.';
+    row.appendChild(num);
+    roll.forEach(function(c){
+      var dw = document.createElement('div'); dw.className='hist-die'; dw.style.background=c.hex;
+      var dd = document.createElement('div'); dd.className='hist-ddot';
+      dw.appendChild(dd); row.appendChild(dw);
+    });
+    var lbl = document.createElement('div'); lbl.className='hist-lbl';
+    lbl.textContent = roll.map(function(c){ return c.name; }).join(', ');
+    row.appendChild(lbl); list.appendChild(row);
+  });
 }
 
 function applyLuckyUI(isLucky){
@@ -972,6 +833,9 @@ function applyLuckyUI(isLucky){
   }
 }
 
+function playRoll(){ try{ var s=document.getElementById('snd-roll'); s.currentTime=0; s.play(); }catch(e){} }
+function playSuccess(){ try{ var s=document.getElementById('snd-success'); s.currentTime=0; s.play(); }catch(e){} }
+
 async function doRoll(){
   var rollCount = parseInt(localStorage.getItem('roll-count')||'0') + 1;
   localStorage.setItem('roll-count', rollCount);
@@ -982,17 +846,50 @@ async function doRoll(){
   var overrideNames = await checkSupabaseOverride();
   var n = overrideNames ? overrideNames.length : parseInt(document.getElementById('num-sel').value);
   var roll = overrideNames
-    ? overrideNames.map(function(name){ return COLORS.find(function(c){return c.name===name;})||COLORS[0]; })
+    ? overrideNames.map(function(name){ return COLORS.find(function(c){ return c.name===name; })||COLORS[0]; })
     : makeRoll(n);
-  sessionStorage.setItem('lr',JSON.stringify(roll));
-  sessionStorage.setItem('nd',n);
-  sessionStorage.setItem('fr','1');
-  if(n<=6){
+
+  sessionStorage.setItem('lr', JSON.stringify(roll));
+  sessionStorage.setItem('nd', n);
+  sessionStorage.setItem('fr', '1');
+  if(n <= 6){
     rollHistory.unshift(roll);
-    if(rollHistory.length>20)rollHistory=rollHistory.slice(0,20);
-    sessionStorage.setItem('dh',JSON.stringify(rollHistory));
+    if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
+    sessionStorage.setItem('dh', JSON.stringify(rollHistory));
   }
   location.reload();
+}
+
+/* ── ADMIN UI ── */
+var adminUnlocked = false;
+var ADMIN_PASS = 'voidy123';
+var adminSelections = ['Red','Red','Red','Red'];
+var adminNumDice = 4;
+
+function renderAdminPickers(){
+  var el = document.getElementById('admin-pickers');
+  el.innerHTML = '';
+  for(var i=0;i<adminNumDice;i++){
+    (function(idx){
+      var wrap  = document.createElement('div'); wrap.className='apick';
+      var swatch= document.createElement('div'); swatch.className='apick-swatch';
+      var c = COLORS.find(function(c){ return c.name===adminSelections[idx]; })||COLORS[0];
+      swatch.style.background = c.hex;
+      var lbl = document.createElement('div'); lbl.className='apick-lbl'; lbl.textContent='Die '+(idx+1);
+      var sel = document.createElement('select'); sel.className='apick-sel';
+      COLORS.forEach(function(col){
+        var opt = document.createElement('option'); opt.value=col.name; opt.textContent=col.name;
+        if(col.name===adminSelections[idx]) opt.selected=true;
+        sel.appendChild(opt);
+      });
+      sel.addEventListener('change',function(e){
+        adminSelections[idx]=e.target.value;
+        swatch.style.background=COLORS.find(function(c){ return c.name===e.target.value; }).hex;
+      });
+      wrap.appendChild(swatch); wrap.appendChild(lbl); wrap.appendChild(sel);
+      el.appendChild(wrap);
+    })(i);
+  }
 }
 
 function openAdmin(){
@@ -1010,108 +907,17 @@ function openAdmin(){
 }
 function closeAdmin(){ document.getElementById('admin-panel').style.display='none'; }
 
-var adminSelections = ['Red','Red','Red','Red'];
-var adminNumDice = 4;
-
-function renderAdminPickers(){
-  var el = document.getElementById('admin-pickers');
-  el.innerHTML='';
-  for(var i=0;i<adminNumDice;i++){
-    (function(idx){
-      var wrap = document.createElement('div');
-      wrap.className = 'apick';
-      var swatch = document.createElement('div');
-      swatch.className = 'apick-swatch';
-      var c = COLORS.find(function(c){return c.name===adminSelections[idx];})||COLORS[0];
-      swatch.style.background = c.hex;
-      var lbl = document.createElement('div');
-      lbl.className = 'apick-lbl';
-      lbl.textContent = 'Die '+(idx+1);
-      var sel = document.createElement('select');
-      sel.className = 'apick-sel';
-      COLORS.forEach(function(col){
-        var opt = document.createElement('option');
-        opt.value = col.name; opt.textContent = col.name;
-        if(col.name === adminSelections[idx]) opt.selected = true;
-        sel.appendChild(opt);
-      });
-      sel.addEventListener('change',function(e){
-        adminSelections[idx]=e.target.value;
-        swatch.style.background=COLORS.find(function(c){return c.name===e.target.value;}).hex;
-      });
-      wrap.appendChild(swatch); wrap.appendChild(lbl); wrap.appendChild(sel);
-      el.appendChild(wrap);
-    })(i);
-  }
-}
-
-document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('admin-num').addEventListener('change',function(){
-    adminNumDice=parseInt(this.value);
-    while(adminSelections.length<adminNumDice) adminSelections.push('Red');
-    renderAdminPickers();
-  });
-
-  document.getElementById('admin-push').addEventListener('click',function(){
-    var cols = adminSelections.slice(0,adminNumDice);
-    localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
-    var encoded = btoa(JSON.stringify(cols));
-    var shareUrl = window.location.origin + window.location.pathname + '?force=' + encoded;
-    document.getElementById('admin-share').value = shareUrl;
-    document.getElementById('admin-share-row').style.display = 'block';
-    document.getElementById('admin-status').textContent='✅ Active on this device. Share the link below to force it on others.';
-  });
-
-  document.getElementById('admin-random').addEventListener('click',function(){
-    localStorage.removeItem('dice-override');
-    document.getElementById('admin-share-row').style.display='none';
-    document.getElementById('admin-status').textContent='🎲 Cleared — back to random.';
-  });
-
-  document.getElementById('admin-copy').addEventListener('click',function(){
-    var inp = document.getElementById('admin-share');
-    inp.select(); document.execCommand('copy');
-    document.getElementById('admin-copy').textContent='Copied!';
-    setTimeout(function(){ document.getElementById('admin-copy').textContent='Copy'; },1500);
-  });
-
-  document.getElementById('admin-close').addEventListener('click', closeAdmin);
-
-  checkAdminOverride();
-});
-
-function showHistory(){
-  renderHistory();
-  document.getElementById('hist-card').classList.add('on');
-  document.getElementById('show-hist').style.display='none';
-}
-function hideHistory(){
-  document.getElementById('hist-card').classList.remove('on');
-  document.getElementById('show-hist').style.display='block';
-}
-
-document.getElementById('roll-btn').addEventListener('click',function(e){e.preventDefault();doRoll();});
-document.getElementById('num-sel').addEventListener('change',function(){sessionStorage.setItem('nd',this.value);doRoll();});
-document.getElementById('type-sel').addEventListener('change',function(){
-  var n=document.getElementById('num-sel').value,t=this.value;
-  if(t==='color-dice')return;
-  if(t==='perya-color-game'){window.location='https://www.online-dice.com/perya-color-game/'+n+'/';return;}
-  window.location='https://www.online-dice.com/roll-dice/'+n+'/'+t+'/';
-});
+/* ── THEME ── */
 var THEME_IMAGES = {
-  blue:  'url("https://i.imgur.com/o5RekSz.jpeg")',
-  green: 'url("https://i.imgur.com/o5RekSz.jpeg")',
-  bw:    'url("https://i.imgur.com/o5RekSz.jpeg")',
-  red:   'url("https://i.imgur.com/n3ad7uK.jpeg")',
-  duo:   'url("https://i.imgur.com/XAdFEAm.jpeg")',
+  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
+  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
+  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
   galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")'
 };
 var THEME_COLORS = {
-  blue:  '#07111f',
-  green: '#22bb44',
-  bw:    '#444444',
-  red:   '#07111f',
-  duo:   '#07111f',
+  blue:   '#07111f',
+  red:    '#07111f',
+  duo:    '#07111f',
   galaxy: '#05010f'
 };
 
@@ -1133,25 +939,67 @@ function applyTheme(t){
   if(saved && THEME_IMAGES[saved]) applyTheme(saved);
 })();
 
-document.getElementById('theme-sel').addEventListener('change',function(){
-  applyTheme(this.value);
-});
-document.getElementById('lang-sel').addEventListener('change',function(){
-  var l=this.value,n=document.getElementById('num-sel').value;
-  if(l!=='en')window.location='https://www.online-dice.com/'+l+'/roll-color-dice/'+n+'/';
+function showHistory(){
+  renderHistory();
+  document.getElementById('hist-card').classList.add('on');
+  document.getElementById('show-hist').style.display='none';
+}
+function hideHistory(){
+  document.getElementById('hist-card').classList.remove('on');
+  document.getElementById('show-hist').style.display='block';
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('admin-num').addEventListener('change', function(){
+    adminNumDice = parseInt(this.value);
+    while(adminSelections.length < adminNumDice) adminSelections.push('Red');
+    renderAdminPickers();
+  });
+
+  document.getElementById('admin-push').addEventListener('click', function(){
+    var cols = adminSelections.slice(0, adminNumDice);
+    localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
+    var encoded = btoa(JSON.stringify(cols));
+    var shareUrl = window.location.origin + window.location.pathname + '?force=' + encoded;
+    document.getElementById('admin-share').value = shareUrl;
+    document.getElementById('admin-share-row').style.display = 'flex';
+    document.getElementById('admin-status').textContent = '✅ Active on this device. Share the link below to force it on others.';
+  });
+
+  document.getElementById('admin-random').addEventListener('click', function(){
+    localStorage.removeItem('dice-override');
+    document.getElementById('admin-share-row').style.display = 'none';
+    document.getElementById('admin-status').textContent = '🎲 Cleared — back to random.';
+  });
+
+  document.getElementById('admin-copy').addEventListener('click', function(){
+    var inp = document.getElementById('admin-share');
+    inp.select(); document.execCommand('copy');
+    document.getElementById('admin-copy').textContent = 'Copied!';
+    setTimeout(function(){ document.getElementById('admin-copy').textContent = 'Copy'; }, 1500);
+  });
+
+  document.getElementById('admin-close').addEventListener('click', closeAdmin);
+
+  checkAdminOverride();
 });
 
-window.addEventListener('DOMContentLoaded',function(){
-  if(!lastRoll){lastRoll=makeRoll(numDice);sessionStorage.setItem('lr',JSON.stringify(lastRoll));freshRoll=true;}
-  renderDice(lastRoll,freshRoll);
+document.getElementById('roll-btn').addEventListener('click', function(e){ e.preventDefault(); doRoll(); });
+document.getElementById('num-sel').addEventListener('change', function(){ sessionStorage.setItem('nd', this.value); doRoll(); });
+document.getElementById('theme-sel').addEventListener('change', function(){ applyTheme(this.value); });
+
+window.addEventListener('DOMContentLoaded', function(){
+  if(!lastRoll){ lastRoll=makeRoll(numDice); sessionStorage.setItem('lr', JSON.stringify(lastRoll)); freshRoll=true; }
+  renderDice(lastRoll, freshRoll);
   applyLuckyUI(sessionStorage.getItem('is-lucky')==='1');
   sessionStorage.setItem('fr','0');
-  if(rollHistory.length>0)document.getElementById('show-hist').style.display='block';
-  if(freshRoll){playRoll();setTimeout(playSuccess,550);}
+  if(rollHistory.length > 0) document.getElementById('show-hist').style.display='block';
+  if(freshRoll){ playRoll(); setTimeout(playSuccess, 550); }
   setTimeout(function(){
     document.getElementById('loader').classList.add('hide');
     setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 420);
-  },1250);
+  }, 1250);
 });
 </script>
 </body>
