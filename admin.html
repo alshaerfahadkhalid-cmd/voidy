@@ -424,34 +424,34 @@ function checkConflict() {
   return hasConflict;
 }
 
-function applyRules(colorNames) {
-  var result = colorNames.slice();
+function randomAllowed() {
   var allowedColors = COLORS.filter(function(c){ return !banColors.has(c.name); });
   if (allowedColors.length === 0) allowedColors = COLORS.slice();
+  return allowedColors[Math.floor(Math.random() * allowedColors.length)].name;
+}
 
-  // Replace banned colors with first allowed color
-  result = result.map(function(name) {
-    if (banColors.has(name)) {
-      return allowedColors[0].name;
+function applyRules(n) {
+  // If any rules are active, randomize all dice then slot in must-show colors
+  var hasRules = mustColors.size > 0 || banColors.size > 0;
+
+  var result = [];
+  if (hasRules) {
+    // Fill all dice with random allowed colors
+    for (var i = 0; i < n; i++) {
+      result.push(randomAllowed());
     }
-    return name;
-  });
-
-  // Ensure must-show colors are present
-  mustColors.forEach(function(mustColor) {
-    if (!result.includes(mustColor)) {
-      // Find a die that isn't itself a must-show color (or just replace index 0 as fallback)
-      var replaceIdx = -1;
-      for (var i = 0; i < result.length; i++) {
-        if (!mustColors.has(result[i])) {
-          replaceIdx = i;
-          break;
-        }
+    // Slot in each must-show color at a random position
+    var mustArr = Array.from(mustColors);
+    mustArr.forEach(function(mustColor) {
+      if (!result.includes(mustColor)) {
+        var idx = Math.floor(Math.random() * n);
+        result[idx] = mustColor;
       }
-      if (replaceIdx === -1) replaceIdx = 0;
-      result[replaceIdx] = mustColor;
-    }
-  });
+    });
+  } else {
+    // No rules — use manual selections as-is
+    result = selections.slice(0, n);
+  }
 
   return result;
 }
@@ -493,8 +493,7 @@ async function pushRoll() {
   var btn = document.getElementById('push-btn');
   btn.disabled = true;
   setStatus('Pushing...');
-  var rawColors = selections.slice(0, numDice);
-  var colorNames = applyRules(rawColors);
+  var colorNames = applyRules(numDice);
   try {
     await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
       method: 'DELETE',
