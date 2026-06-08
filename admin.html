@@ -12,11 +12,11 @@ body {
   min-height: 100vh;
   background: #07111f;
   color: #fff;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
   padding: 30px 16px;
 }
 
-#login-screen, #admin-screen { width: 100%; max-width: 480px; }
+#login-screen, #admin-screen { width: 100%; max-width: 500px; }
 
 /* LOGIN */
 #login-screen {
@@ -26,8 +26,7 @@ body {
   padding: 40px 32px;
   text-align: center;
 }
-#login-screen h1 { font-size: 2.2rem; margin-bottom: 8px; color: #FFD700;
-  text-shadow: 2px 2px 0 #000; }
+#login-screen h1 { font-size: 2.2rem; margin-bottom: 8px; color: #FFD700; text-shadow: 2px 2px 0 #000; }
 #login-screen p { font-family: Arial, sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 28px; letter-spacing: 0; }
 #pw-input {
   width: 100%; padding: 14px 18px;
@@ -69,8 +68,7 @@ h2 {
 }
 .panel-title {
   font-size: 1.1rem; letter-spacing: 0.1em; color: #fff;
-  margin-bottom: 18px;
-  text-shadow: 1px 1px 0 #000;
+  margin-bottom: 18px; text-shadow: 1px 1px 0 #000;
 }
 
 /* NUM DICE */
@@ -129,6 +127,56 @@ h2 {
 }
 .color-opt:hover { transform: scale(1.15); border-color: #fff; }
 
+/* RULE PANELS */
+.rule-panel {
+  background: rgba(0,0,0,0.25);
+  border-radius: 14px; padding: 16px; margin-bottom: 14px;
+}
+.rule-panel-title {
+  font-size: 0.9rem; letter-spacing: 0.08em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.rule-colors { display: flex; gap: 8px; flex-wrap: wrap; }
+.rule-color-btn {
+  width: 42px; height: 42px; border-radius: 9px;
+  border: 3px solid transparent; cursor: pointer;
+  transition: transform 0.1s, border-color 0.1s, box-shadow 0.1s;
+  position: relative; font-size: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.rule-color-btn:hover { transform: scale(1.12); }
+.rule-color-btn.selected-must {
+  border-color: #88ff88;
+  box-shadow: 0 0 0 3px rgba(136,255,136,0.4);
+}
+.rule-color-btn.selected-must::after {
+  content: '✓';
+  position: absolute; bottom: -2px; right: -2px;
+  background: #88ff88; color: #000;
+  font-size: 11px; width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: Arial, sans-serif; font-weight: bold;
+  line-height: 16px; text-align: center;
+}
+.rule-color-btn.selected-ban {
+  border-color: #ff5555;
+  box-shadow: 0 0 0 3px rgba(255,85,85,0.4);
+}
+.rule-color-btn.selected-ban::after {
+  content: '✗';
+  position: absolute; bottom: -2px; right: -2px;
+  background: #ff5555; color: #fff;
+  font-size: 11px; width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: Arial, sans-serif; font-weight: bold;
+  line-height: 16px; text-align: center;
+}
+.rule-hint {
+  font-family: Arial, sans-serif; font-size: 12px;
+  color: rgba(255,255,255,0.4); margin-top: 10px;
+  letter-spacing: 0; line-height: 1.4;
+}
+
 /* PUSH BTN */
 #push-btn {
   width: 100%; padding: 17px;
@@ -168,6 +216,15 @@ h2 {
 }
 .forced-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.9); }
 .forced-label { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; letter-spacing: 0; }
+
+.conflict-warn {
+  display: none;
+  background: rgba(255,85,85,0.2);
+  border: 1.5px solid #ff5555;
+  border-radius: 10px; padding: 10px 14px;
+  font-family: Arial, sans-serif; font-size: 13px;
+  color: #ff8888; margin-top: 12px; letter-spacing: 0;
+}
 </style>
 </head>
 <body>
@@ -206,6 +263,26 @@ h2 {
   </div>
 
   <div class="panel">
+    <div class="panel-title">🎯 Color Rules</div>
+
+    <div class="rule-panel">
+      <div class="rule-panel-title" style="color:#88ff88">✅ Must show (guaranteed)</div>
+      <div class="rule-colors" id="must-colors"></div>
+      <div class="rule-hint">Any color selected here will always appear at least once in the forced roll.</div>
+    </div>
+
+    <div class="rule-panel">
+      <div class="rule-panel-title" style="color:#ff5555">🚫 Must not show (banned)</div>
+      <div class="rule-colors" id="ban-colors"></div>
+      <div class="rule-hint">Any color selected here will never appear in the forced roll. Dice set to a banned color will be reassigned to the nearest allowed color.</div>
+    </div>
+
+    <div class="conflict-warn" id="conflict-warn">
+      ⚠️ Conflict detected: a color is both required and banned. Please remove it from one rule.
+    </div>
+  </div>
+
+  <div class="panel">
     <button id="push-btn" onclick="pushRoll()">🎯 Force This Roll</button>
     <button id="clear-btn" onclick="clearRoll()">🎲 Clear — Back to Random</button>
     <div id="status"></div>
@@ -229,6 +306,8 @@ var COLORS = [
 var numDice = 4;
 var selections = ['Red','Red','Red','Red'];
 var activePicker = null;
+var mustColors = new Set();
+var banColors = new Set();
 
 function tryLogin() {
   var pw = document.getElementById('pw-input').value;
@@ -244,7 +323,6 @@ function tryLogin() {
 document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') tryLogin(); });
 
 function init() {
-  // Num buttons
   var numRow = document.getElementById('num-row');
   numRow.innerHTML = '';
   [1,2,3,4,5,6].forEach(function(n) {
@@ -263,6 +341,7 @@ function init() {
   });
   renderPickers();
   renderColorOpts();
+  renderRuleColors();
 }
 
 function renderPickers() {
@@ -309,6 +388,74 @@ function renderColorOpts() {
   });
 }
 
+function renderRuleColors() {
+  renderRuleRow('must-colors', mustColors, 'must');
+  renderRuleRow('ban-colors', banColors, 'ban');
+}
+
+function renderRuleRow(containerId, set, type) {
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  COLORS.forEach(function(c) {
+    var btn = document.createElement('button');
+    btn.className = 'rule-color-btn' + (set.has(c.name) ? ' selected-' + type : '');
+    btn.style.background = c.hex;
+    btn.title = c.name;
+    btn.onclick = function() {
+      if (set.has(c.name)) {
+        set.delete(c.name);
+      } else {
+        set.add(c.name);
+        if (type === 'must') banColors.delete(c.name);
+        else mustColors.delete(c.name);
+      }
+      checkConflict();
+      renderRuleColors();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function checkConflict() {
+  var hasConflict = false;
+  mustColors.forEach(function(c){ if(banColors.has(c)) hasConflict = true; });
+  document.getElementById('conflict-warn').style.display = hasConflict ? 'block' : 'none';
+  document.getElementById('push-btn').disabled = hasConflict;
+  return hasConflict;
+}
+
+function applyRules(colorNames) {
+  var result = colorNames.slice();
+  var allowedColors = COLORS.filter(function(c){ return !banColors.has(c.name); });
+  if (allowedColors.length === 0) allowedColors = COLORS.slice();
+
+  // Replace banned colors with first allowed color
+  result = result.map(function(name) {
+    if (banColors.has(name)) {
+      return allowedColors[0].name;
+    }
+    return name;
+  });
+
+  // Ensure must-show colors are present
+  mustColors.forEach(function(mustColor) {
+    if (!result.includes(mustColor)) {
+      // Find a die that isn't itself a must-show color (or just replace index 0 as fallback)
+      var replaceIdx = -1;
+      for (var i = 0; i < result.length; i++) {
+        if (!mustColors.has(result[i])) {
+          replaceIdx = i;
+          break;
+        }
+      }
+      if (replaceIdx === -1) replaceIdx = 0;
+      result[replaceIdx] = mustColor;
+    }
+  });
+
+  return result;
+}
+
 async function loadCurrentForced() {
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
@@ -342,17 +489,17 @@ function showCurrentForced(colors) {
 }
 
 async function pushRoll() {
+  if (checkConflict()) return;
   var btn = document.getElementById('push-btn');
   btn.disabled = true;
   setStatus('Pushing...');
-  var colorNames = selections.slice(0, numDice);
+  var rawColors = selections.slice(0, numDice);
+  var colorNames = applyRules(rawColors);
   try {
-    // Clear any existing override first
     await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
       method: 'DELETE',
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
-    // Insert new override
     var res = await fetch(SUPABASE_URL + '/rest/v1/dice_override', {
       method: 'POST',
       headers: {
@@ -364,7 +511,7 @@ async function pushRoll() {
       body: JSON.stringify({ colors: JSON.stringify(colorNames), active: true })
     });
     if (res.ok || res.status === 201) {
-      setStatus('✅ Forced! Next roll on the site will show: ' + colorNames.join(', '));
+      setStatus('✅ Forced! Next roll: ' + colorNames.join(', '));
       showCurrentForced(colorNames);
     } else {
       setStatus('❌ Error — try again.');
@@ -385,7 +532,7 @@ async function clearRoll() {
     setStatus('🎲 Cleared — dice are random again.');
     document.getElementById('current-panel').style.display = 'none';
   } catch(e) {
-    setStatus('❌ Network errors.');
+    setStatus('❌ Network error.');
   }
 }
 
