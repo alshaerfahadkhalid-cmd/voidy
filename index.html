@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,15 +132,10 @@ body[data-theme="void"] #logo-img { height: 580px; max-height: none; width: auto
   margin-bottom: 18px;
   transition: background 0.4s ease;
 }
-body[data-theme="duo"] .card {
-  background: rgba(110, 65, 20, 0.52);
-}
-body[data-theme="galaxy"] .card {
-  background: rgba(60, 20, 100, 0.48);
-}
-body[data-theme="void"] .card {
-  background: transparent;
-}
+body[data-theme="duo"] .card { background: rgba(110, 65, 20, 0.52); }
+body[data-theme="galaxy"] .card { background: rgba(60, 20, 100, 0.48); }
+body[data-theme="void"] .card { background: transparent; }
+
 /* ── VOID THEME OVERRIDES ── */
 body[data-theme="void"] .card-title {
   text-shadow:
@@ -171,7 +167,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
     5px 5px 0 #0d47a1, -5px -5px 0 #0d47a1,
     6px 6px 8px rgba(0,0,80,0.4);
   margin-bottom: 22px;
-  -webkit-text-stroke: 0px;
 }
 
 /* ── SELECTS ── */
@@ -311,9 +306,15 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   box-shadow: 0 5px 0 #000, 0 8px 18px rgba(0,0,0,0.4);
   transition: transform 0.08s, box-shadow 0.08s;
   user-select: none; text-decoration: none;
+  position: relative;
 }
 #roll-btn:hover { background: linear-gradient(to bottom, #333 0%, #111 60%, #222 100%); }
 #roll-btn:active { transform:translateY(4px); box-shadow:0 1px 0 #000,0 3px 8px rgba(0,0,0,0.3); }
+#roll-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+  pointer-events: none;
+}
 
 /* ── SHOW HISTORY ── */
 #show-hist { display: none !important; }
@@ -479,6 +480,7 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   border: none; cursor: pointer;
 }
 #gate-close-btn:hover { color: rgba(255,255,255,0.7); }
+
 /* ── ADMIN TRIGGER ── */
 #admin-trigger {
   position: fixed; bottom: 18px; right: 18px; z-index: 9999;
@@ -490,7 +492,7 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
 }
 #admin-trigger:hover { background: rgba(0,0,0,0.85); color: #fff; border-color: rgba(255,255,255,0.6); }
 
-/* ── ADMIN PANEL (SINGLE PAGE CARDS) ── */
+/* ── ADMIN PANEL ── */
 #admin-panel {
   display: none; position: fixed; inset: 0; z-index: 99999;
   align-items: flex-start; justify-content: center;
@@ -502,7 +504,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   width: 100%; max-width: 520px;
   display: flex; flex-direction: column; gap: 14px;
 }
-/* Header */
 #admin-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 2px 2px 0;
@@ -517,7 +518,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   transition: color 0.15s;
 }
 #admin-close:hover { color: #fff; }
-/* Section cards */
 .asection {
   background: #0e0e12;
   border: 1.5px solid rgba(255,255,255,0.1);
@@ -531,8 +531,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   color: #4f8ef7; margin-bottom: 14px;
 }
 #admin-content { display: contents; }
-
-/* ── Shared form elements inside admin ── */
 .afield-label {
   font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
@@ -547,9 +545,7 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   transition: border-color 0.15s;
   box-sizing: border-box;
 }
-.afield-input:focus, .afield-select:focus, .afield-textarea:focus {
-  border-color: #4f8ef7;
-}
+.afield-input:focus, .afield-select:focus, .afield-textarea:focus { border-color: #4f8ef7; }
 .afield-textarea { resize: vertical; min-height: 80px; }
 .afield-group { margin-bottom: 16px; }
 .afield-row { display: flex; gap: 10px; }
@@ -559,38 +555,22 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   font-family: Arial, sans-serif; font-size: 13px; font-weight: 700;
   transition: 0.15s; letter-spacing: 0.03em;
 }
-.abtn-primary {
-  background: #4f8ef7; color: #fff;
-}
+.abtn-primary { background: #4f8ef7; color: #fff; }
 .abtn-primary:hover { background: #3a7de0; }
-.abtn-secondary {
-  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75);
-  border: 1.5px solid rgba(255,255,255,0.15);
-}
+.abtn-secondary { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75); border: 1.5px solid rgba(255,255,255,0.15); }
 .abtn-secondary:hover { background: rgba(255,255,255,0.14); color: #fff; }
-.abtn-danger {
-  background: rgba(220,50,50,0.18); color: #f77; border: 1.5px solid rgba(220,50,50,0.3);
-}
+.abtn-danger { background: rgba(220,50,50,0.18); color: #f77; border: 1.5px solid rgba(220,50,50,0.3); }
 .abtn-danger:hover { background: rgba(220,50,50,0.3); color: #faa; }
 .abtn-full { width: 100%; }
-.astatus {
-  font-size: 12px; color: rgba(255,255,255,0.45);
-  font-family: Arial, sans-serif; margin-top: 12px; min-height: 18px;
-}
-
-/* ── HEIGHT TAB ── */
+.astatus { font-size: 12px; color: rgba(255,255,255,0.45); font-family: Arial, sans-serif; margin-top: 12px; min-height: 18px; }
 .aslider-wrap { display: flex; align-items: center; gap: 12px; }
-.aslider-wrap input[type=range] {
-  flex: 1; accent-color: #4f8ef7; cursor: pointer;
-}
+.aslider-wrap input[type=range] { flex: 1; accent-color: #4f8ef7; cursor: pointer; }
 .aslider-val {
   width: 46px; text-align: center;
   background: #1a1a22; border: 1.5px solid rgba(255,255,255,0.14);
   border-radius: 7px; color: #fff; font-size: 12px;
   padding: 5px 6px; font-family: Arial, sans-serif;
 }
-
-/* ── LOGO TAB ── */
 #logo-preview-wrap {
   background: rgba(255,255,255,0.04); border-radius: 10px;
   padding: 14px; text-align: center; margin-bottom: 14px;
@@ -598,12 +578,7 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   min-height: 80px; display: flex; align-items: center; justify-content: center;
 }
 #logo-preview { max-height: 100px; max-width: 100%; border-radius: 6px; }
-
-/* ── ADD TEXT TAB ── */
-.pos-grid {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 6px;
-  margin-bottom: 16px;
-}
+.pos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 16px; }
 .pos-btn {
   padding: 8px 4px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.14);
   background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55);
@@ -611,8 +586,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   font-family: Arial, sans-serif; font-weight: 700; transition: 0.15s;
 }
 .pos-btn:hover, .pos-btn.active { background: #4f8ef7; color: #fff; border-color: #4f8ef7; }
-
-/* ── ADD CARDS TAB ── */
 .acard-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 .acard-item {
   display: flex; align-items: center; justify-content: space-between;
@@ -620,13 +593,8 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   border-radius: 9px; padding: 9px 12px;
 }
 .acard-item-title { font-size: 13px; color: #fff; font-family: Arial, sans-serif; }
-.acard-item-del {
-  background: none; border: none; color: rgba(255,100,100,0.6);
-  font-size: 16px; cursor: pointer; line-height: 1; padding: 0;
-}
+.acard-item-del { background: none; border: none; color: rgba(255,100,100,0.6); font-size: 16px; cursor: pointer; line-height: 1; padding: 0; }
 .acard-item-del:hover { color: #f77; }
-
-/* ── CREDITS TAB ── */
 .acredit-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 .acredit-item {
   display: flex; align-items: flex-start; gap: 10px;
@@ -636,33 +604,19 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
 .acredit-text { flex: 1; }
 .acredit-name { font-size: 13px; font-weight: 700; color: #fff; font-family: Arial, sans-serif; }
 .acredit-role { font-size: 11px; color: rgba(255,255,255,0.45); font-family: Arial, sans-serif; margin-top: 2px; }
-.acredit-del {
-  background: none; border: none; color: rgba(255,100,100,0.5);
-  font-size: 15px; cursor: pointer; padding: 0; flex-shrink: 0;
-}
+.acredit-del { background: none; border: none; color: rgba(255,100,100,0.5); font-size: 15px; cursor: pointer; padding: 0; flex-shrink: 0; }
 .acredit-del:hover { color: #f77; }
-
-
-
-/* Floating text overlays */
-.float-text-overlay {
-  position: fixed; z-index: 9000;
-  cursor: move; user-select: none;
-  padding: 4px 8px;
-}
+.float-text-overlay { position: fixed; z-index: 9000; cursor: move; user-select: none; padding: 4px 8px; }
 .float-text-overlay .float-del-btn {
   display: none; position: absolute; top: -8px; right: -8px;
   width: 18px; height: 18px; border-radius: 50%;
   background: #e33; color: #fff; border: none;
-  font-size: 11px; cursor: pointer; align-items: center; justify-content: center;
-  line-height: 1;
+  font-size: 11px; cursor: pointer; align-items: center; justify-content: center; line-height: 1;
 }
 .float-text-overlay:hover .float-del-btn { display: flex; }
 
 /* ── LUCKY ROLL STATE ── */
-.lucky-card {
-  box-shadow: 0 0 32px rgba(255,210,0,0.25), inset 0 0 0 1px rgba(255,215,0,0.15);
-}
+.lucky-card { box-shadow: 0 0 32px rgba(255,210,0,0.25), inset 0 0 0 1px rgba(255,215,0,0.15); }
 .lucky-title {
   text-shadow:
     2px 0 0 #b87800, -2px 0 0 #b87800, 0 2px 0 #b87800, 0 -2px 0 #b87800,
@@ -674,10 +628,7 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   border: 5px solid #d49008 !important;
   box-shadow: 0 6px 0 rgba(100,65,0,0.28), 0 8px 20px rgba(200,145,0,0.28), 0 0 16px rgba(255,200,0,0.35) !important;
 }
-.die-star {
-  line-height: 1; user-select: none; pointer-events: none; display: block;
-  filter: drop-shadow(0 1px 3px rgba(160,100,0,0.45));
-}
+.die-star { line-height: 1; user-select: none; pointer-events: none; display: block; filter: drop-shadow(0 1px 3px rgba(160,100,0,0.45)); }
 .die-xl  .die-star { font-size: 52px; }
 .die-lg  .die-star { font-size: 43px; }
 .die-md  .die-star { font-size: 33px; }
@@ -700,13 +651,8 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   border-color: rgba(255,255,255,0.82);
   box-shadow: 0 5px 0 #7a4c00, 0 8px 18px rgba(180,100,0,0.48);
 }
-#roll-btn.lucky-btn:hover {
-  background: linear-gradient(to bottom, #ffe84d 0%, #f09a00 55%, #ffbc00 100%);
-}
-#roll-btn.lucky-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 1px 0 #7a4c00, 0 3px 8px rgba(180,100,0,0.35);
-}
+#roll-btn.lucky-btn:hover { background: linear-gradient(to bottom, #ffe84d 0%, #f09a00 55%, #ffbc00 100%); }
+#roll-btn.lucky-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #7a4c00, 0 3px 8px rgba(180,100,0,0.35); }
 #lucky-badge {
   display: none;
   text-align: center;
@@ -721,14 +667,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   from { opacity:0; transform: translateY(6px); }
   to   { opacity:1; transform: translateY(0); }
 }
-
-/* ── THEMES ── */
-var THEME_IMAGES = {
-  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
-  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
-  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
-  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")'
-};
 
 @media(max-width:520px){
   .selects{flex-direction:column;}
@@ -748,7 +686,6 @@ var THEME_IMAGES = {
   <source src="https://www.online-dice.com/sounds/success.ogg" type="audio/ogg">
   <source src="https://www.online-dice.com/sounds/success.mp3" type="audio/mpeg">
 </audio>
-
 
 <div id="socials-float">
   <a class="social-item social-tiktok" href="https://www.tiktok.com/@voidy_v" target="_blank">
@@ -785,16 +722,12 @@ var THEME_IMAGES = {
 <button id="admin-trigger" onclick="openAdmin()">⚙</button>
 <div id="admin-panel">
   <div id="admin-box">
-
-    <!-- Header -->
     <div id="admin-header">
       <h2>⚙ Admin Panel</h2>
       <button id="admin-close">✕</button>
     </div>
-
     <div id="admin-content">
-
-      <!-- ── CARD: HEIGHT ── -->
+      <!-- HEIGHT -->
       <div class="asection">
         <div class="asection-title">Height &amp; Spacing</div>
         <div class="afield-group">
@@ -823,8 +756,7 @@ var THEME_IMAGES = {
         </div>
         <button class="abtn abtn-secondary abtn-full" id="height-reset">Reset to Defaults</button>
       </div>
-
-      <!-- ── CARD: LOGO ── -->
+      <!-- LOGO -->
       <div class="asection">
         <div class="asection-title">Logo</div>
         <div id="logo-preview-wrap">
@@ -842,8 +774,7 @@ var THEME_IMAGES = {
         </div>
         <div class="astatus" id="logo-status"></div>
       </div>
-
-      <!-- ── CARD: ADD TEXT ── -->
+      <!-- ADD TEXT -->
       <div class="asection">
         <div class="asection-title">Add Text Overlay</div>
         <div class="afield-group">
@@ -889,8 +820,7 @@ var THEME_IMAGES = {
           <div id="ft-list" style="font-size:12px;color:rgba(255,255,255,0.35);font-family:Arial;">None yet.</div>
         </div>
       </div>
-
-      <!-- ── CARD: ADD CARDS ── -->
+      <!-- ADD CARDS -->
       <div class="asection">
         <div class="asection-title">Add Cards</div>
         <div class="afield-group">
@@ -917,8 +847,7 @@ var THEME_IMAGES = {
           <div id="nc-empty" style="font-size:12px;color:rgba(255,255,255,0.3);font-family:Arial;">No custom cards yet.</div>
         </div>
       </div>
-
-      <!-- ── CARD: CREDITS ── -->
+      <!-- CREDITS -->
       <div class="asection">
         <div class="asection-title">Credits</div>
         <div class="acredit-list" id="credits-list"></div>
@@ -941,13 +870,11 @@ var THEME_IMAGES = {
         <button class="abtn abtn-primary abtn-full" id="cr-add-btn">Add Credit</button>
         <div class="astatus" id="cr-status"></div>
       </div>
-
-    </div><!-- /admin-content -->
-  </div><!-- /admin-box -->
-</div><!-- /admin-panel -->
+    </div>
+  </div>
+</div>
 
 <div id="page">
-
   <div id="hdr">
     <div id="sub-hdr">Virtual Dice Simulator</div>
     <img id="logo-img"
@@ -964,7 +891,6 @@ var THEME_IMAGES = {
 
   <div class="card" id="main-card">
     <div class="card-title" id="main-card-title">Roll Color Dice</div>
-
     <div class="selects">
       <select id="num-sel" autocomplete="off">
         <option value="1">1 die</option><option value="2">2 dice</option>
@@ -1005,7 +931,6 @@ var THEME_IMAGES = {
       <span style="color:#6a0099;font-weight:900;">Purple</span>.
     </div>
     <a id="chances-link" href="#">See your chances of winning →</a>
-
     <div id="show-hist" onclick="showHistory()">Your Last 20 Rolls ↓</div>
   </div>
 
@@ -1016,7 +941,6 @@ var THEME_IMAGES = {
     <div id="hist-list"></div>
     <div class="hist-note">Note: only dice rolls with up to 6 dice are saved.</div>
   </div>
-
 </div>
 
 <script>
@@ -1044,32 +968,31 @@ function makeRoll(n){
   return r;
 }
 
-/* ── SUPABASE ADMIN OVERRIDE ── */
+/* ── SUPABASE ── */
 var SUPABASE_URL = 'https://sqxkecwsvbmzrkqltjsk.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxeGtlY3dzdmJtenJrcWx0anNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzY5MzQsImV4cCI6MjA5NjI1MjkzNH0.cd_d14fUVy8oH0lLWqrepoKfTEGHgRai6QbLjZ-v-Eg';
 
-async function fetchWithTimeout(url, opts, ms){
+/* ── FIXED: always wait for Supabase, no 500ms race ── */
+async function checkSupabaseOverride() {
   var controller = new AbortController();
-  var timer = setTimeout(function(){ controller.abort(); }, ms);
+  var timer = setTimeout(function(){ controller.abort(); }, 8000);
   try {
-    var res = await fetch(url, Object.assign({}, opts, {signal: controller.signal}));
-    clearTimeout(timer);
-    return res;
-  } catch(e){ clearTimeout(timer); throw e; }
-}
-
-async function checkSupabaseOverride(){
-  try {
-    var res = await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1', {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY
+    var res = await fetch(
+      SUPABASE_URL + '/rest/v1/dice_override?select=*&active=eq.true&limit=1',
+      {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        signal: controller.signal
       }
-    }, 1000);
+    );
+    clearTimeout(timer);
     var data = await res.json();
-    if(data && data.length > 0 && data[0].colors){
+    if (data && data.length > 0 && data[0].colors) {
       var colors = JSON.parse(data[0].colors);
-      await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
+      // Deactivate so it only fires once
+      fetch(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
         method: 'PATCH',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -1077,11 +1000,14 @@ async function checkSupabaseOverride(){
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ active: false })
-      }, 3000);
+      });
       return colors;
     }
-  } catch(e){}
-  return null;
+    return null;
+  } catch(e) {
+    clearTimeout(timer);
+    return null; // Supabase unreachable — fall back to random
+  }
 }
 
 function checkAdminOverride(){
@@ -1182,31 +1108,41 @@ function applyLuckyUI(isLucky){
 function playRoll(){ try{ var s=document.getElementById('snd-roll'); s.currentTime=0; s.play(); }catch(e){} }
 function playSuccess(){ try{ var s=document.getElementById('snd-success'); s.currentTime=0; s.play(); }catch(e){} }
 
+/* ── FIXED doRoll: always waits for Supabase before rolling ── */
 async function doRoll(){
+  var btn = document.getElementById('roll-btn');
+  btn.classList.add('loading');
+  btn.textContent = 'Rolling...';
+
   var rollCount = parseInt(localStorage.getItem('roll-count')||'0') + 1;
   localStorage.setItem('roll-count', rollCount);
   sessionStorage.setItem('is-lucky', (rollCount % 10 === 0) ? '1' : '0');
 
   document.querySelectorAll('.die').forEach(function(d){ d.classList.add('rolling'); });
 
-  // Race Supabase against 500ms — use override if it arrives in time, otherwise roll randomly
-  var overrideNames = await Promise.race([
-    checkSupabaseOverride(),
-    new Promise(function(res){ setTimeout(function(){ res(null); }, 500); })
-  ]);
-  var n = overrideNames ? overrideNames.length : parseInt(document.getElementById('num-sel').value);
+  // Always wait — no race against a short timer
+  var overrideNames = await checkSupabaseOverride();
+
+  var n = overrideNames
+    ? overrideNames.length
+    : parseInt(document.getElementById('num-sel').value);
+
   var roll = overrideNames
-    ? overrideNames.map(function(name){ return COLORS.find(function(c){ return c.name===name; })||COLORS[0]; })
+    ? overrideNames.map(function(name){
+        return COLORS.find(function(c){ return c.name === name; }) || COLORS[0];
+      })
     : makeRoll(n);
 
   sessionStorage.setItem('lr', JSON.stringify(roll));
   sessionStorage.setItem('nd', n);
   sessionStorage.setItem('fr', '1');
+
   if(n <= 6){
     rollHistory.unshift(roll);
     if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
     localStorage.setItem('dh', JSON.stringify(rollHistory));
   }
+
   location.reload();
 }
 
@@ -1219,7 +1155,6 @@ var creditsList = [
   { name: 'Voidy', role: 'Creator & Developer', link: 'https://www.tiktok.com/@voidy_v' }
 ];
 
-/* ── Gate ── */
 function openGate(){
   var gate = document.getElementById('admin-gate');
   gate.style.display = 'flex';
@@ -1251,9 +1186,6 @@ function openAdmin(){
 }
 function closeAdmin(){ document.getElementById('admin-panel').style.display = 'none'; }
 
-
-
-/* ── Height / Padding tab ── */
 function syncSlider(sliderId, valId, cssProp, unit){
   var slider = document.getElementById(sliderId);
   var valEl  = document.getElementById(valId);
@@ -1270,7 +1202,6 @@ function syncSlider(sliderId, valId, cssProp, unit){
   });
 }
 
-/* ── Logo tab ── */
 function previewLogo(){
   var url = document.getElementById('logo-url-input').value.trim();
   var prev = document.getElementById('logo-preview');
@@ -1299,7 +1230,6 @@ function resetLogo(){
   document.getElementById('logo-status').textContent = 'Logo reset to theme default.';
 }
 
-/* ── Add Text tab ── */
 var selectedPos = 'top-center';
 var ftCounter = 0;
 
@@ -1385,7 +1315,6 @@ function makeDraggable(el){
   });
 }
 
-/* ── Add Cards tab ── */
 var ncCounter = 0;
 function addCustomCard(){
   var title   = document.getElementById('nc-title').value.trim();
@@ -1436,7 +1365,6 @@ function renderCustomCardsList(){
   });
 }
 
-/* ── Credits tab ── */
 function addCredit(){
   var name = document.getElementById('cr-name').value.trim();
   var role = document.getElementById('cr-role').value.trim();
@@ -1532,11 +1460,9 @@ function hideHistory(){
 document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('admin-close').addEventListener('click', closeAdmin);
 
-  /* ── HEIGHT TAB sliders ── */
   syncSlider('pad-slider', 'pad-val', null, 'px');
   syncSlider('gap-slider',    'gap-val',    null, 'px');
   syncSlider('hdrtop-slider', 'hdrtop-val', null, 'px');
-  // Live apply card padding
   document.getElementById('pad-slider').addEventListener('input', function(){
     var v = this.value+'px';
     document.querySelectorAll('.card').forEach(function(c){ c.style.paddingTop=v; c.style.paddingBottom=v; });
@@ -1560,7 +1486,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('hdr').style.paddingTop = this.value+'px';
   });
   document.getElementById('height-reset').addEventListener('click', function(){
-    ['pad-slider','gap-slider','hdrtop-slider'].forEach(function(id){ document.getElementById(id).dispatchEvent(new Event('input')); });
     document.getElementById('pad-slider').value=36; document.getElementById('pad-val').value=36;
     document.getElementById('gap-slider').value=18; document.getElementById('gap-val').value=18;
     document.getElementById('hdrtop-slider').value=90; document.getElementById('hdrtop-val').value=90;
@@ -1568,15 +1493,12 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('hdr').style.paddingTop = '90px';
   });
 
-  /* ── LOGO TAB ── */
   document.getElementById('logo-preview-btn').addEventListener('click', previewLogo);
   document.getElementById('logo-apply-btn').addEventListener('click', applyLogo);
   document.getElementById('logo-reset-btn').addEventListener('click', resetLogo);
-  // Load saved logo on open
   var savedLogo = localStorage.getItem('admin-logo-url');
   if(savedLogo){ var logoEl2=document.getElementById('logo-img'); if(logoEl2) logoEl2.src=savedLogo; }
 
-  /* ── ADD TEXT TAB ── */
   document.querySelectorAll('.pos-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.pos-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -1585,14 +1507,9 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
   document.getElementById('ft-add-btn').addEventListener('click', addFloatText);
-
-  /* ── ADD CARDS TAB ── */
   document.getElementById('nc-add-btn').addEventListener('click', addCustomCard);
-
-  /* ── CREDITS TAB ── */
   document.getElementById('cr-add-btn').addEventListener('click', addCredit);
 
-  /* ── GATE BUTTONS ── */
   document.getElementById('gate-submit').addEventListener('click', submitGate);
   document.getElementById('gate-close-btn').addEventListener('click', closeGate);
   document.getElementById('gate-input').addEventListener('keydown', function(e){
@@ -1600,15 +1517,10 @@ document.addEventListener('DOMContentLoaded', function(){
     if(e.key === 'Escape') closeGate();
   });
 
-  /* ── F12 OPENS GATE ── */
   document.addEventListener('keydown', function(e){
     if(e.key === 'F12'){
       e.preventDefault();
-      if(adminUnlocked){
-        openAdmin();
-      } else {
-        openGate();
-      }
+      if(adminUnlocked){ openAdmin(); } else { openGate(); }
     }
   });
 
