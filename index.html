@@ -315,6 +315,13 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
 #roll-btn:hover { background: linear-gradient(to bottom, #333 0%, #111 60%, #222 100%); }
 #roll-btn:active { transform:translateY(4px); box-shadow:0 1px 0 #000,0 3px 8px rgba(0,0,0,0.3); }
 
+/* Rolling state — prevent interaction */
+#roll-btn.is-rolling {
+  pointer-events: none;
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
 /* ── SHOW HISTORY ── */
 #show-hist { display: none !important; }
 
@@ -642,8 +649,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
 }
 .acredit-del:hover { color: #f77; }
 
-
-
 /* Floating text overlays */
 .float-text-overlay {
   position: fixed; z-index: 9000;
@@ -722,14 +727,6 @@ body[data-theme="void"] .selects select option { background: #fff; color: #111; 
   to   { opacity:1; transform: translateY(0); }
 }
 
-/* ── THEMES ── */
-var THEME_IMAGES = {
-  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
-  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
-  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
-  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")'
-};
-
 @media(max-width:520px){
   .selects{flex-direction:column;}
   #roll-btn{font-size:1.3rem;}
@@ -748,7 +745,6 @@ var THEME_IMAGES = {
   <source src="https://www.online-dice.com/sounds/success.ogg" type="audio/ogg">
   <source src="https://www.online-dice.com/sounds/success.mp3" type="audio/mpeg">
 </audio>
-
 
 <div id="socials-float">
   <a class="social-item social-tiktok" href="https://www.tiktok.com/@voidy_v" target="_blank">
@@ -785,15 +781,11 @@ var THEME_IMAGES = {
 <button id="admin-trigger" onclick="openAdmin()">⚙</button>
 <div id="admin-panel">
   <div id="admin-box">
-
-    <!-- Header -->
     <div id="admin-header">
       <h2>⚙ Admin Panel</h2>
       <button id="admin-close">✕</button>
     </div>
-
     <div id="admin-content">
-
       <!-- ── CARD: HEIGHT ── -->
       <div class="asection">
         <div class="asection-title">Height &amp; Spacing</div>
@@ -823,7 +815,6 @@ var THEME_IMAGES = {
         </div>
         <button class="abtn abtn-secondary abtn-full" id="height-reset">Reset to Defaults</button>
       </div>
-
       <!-- ── CARD: LOGO ── -->
       <div class="asection">
         <div class="asection-title">Logo</div>
@@ -842,7 +833,6 @@ var THEME_IMAGES = {
         </div>
         <div class="astatus" id="logo-status"></div>
       </div>
-
       <!-- ── CARD: ADD TEXT ── -->
       <div class="asection">
         <div class="asection-title">Add Text Overlay</div>
@@ -889,7 +879,6 @@ var THEME_IMAGES = {
           <div id="ft-list" style="font-size:12px;color:rgba(255,255,255,0.35);font-family:Arial;">None yet.</div>
         </div>
       </div>
-
       <!-- ── CARD: ADD CARDS ── -->
       <div class="asection">
         <div class="asection-title">Add Cards</div>
@@ -917,7 +906,6 @@ var THEME_IMAGES = {
           <div id="nc-empty" style="font-size:12px;color:rgba(255,255,255,0.3);font-family:Arial;">No custom cards yet.</div>
         </div>
       </div>
-
       <!-- ── CARD: CREDITS ── -->
       <div class="asection">
         <div class="asection-title">Credits</div>
@@ -941,13 +929,11 @@ var THEME_IMAGES = {
         <button class="abtn abtn-primary abtn-full" id="cr-add-btn">Add Credit</button>
         <div class="astatus" id="cr-status"></div>
       </div>
-
     </div><!-- /admin-content -->
   </div><!-- /admin-box -->
 </div><!-- /admin-panel -->
 
 <div id="page">
-
   <div id="hdr">
     <div id="sub-hdr">Virtual Dice Simulator</div>
     <img id="logo-img"
@@ -964,7 +950,6 @@ var THEME_IMAGES = {
 
   <div class="card" id="main-card">
     <div class="card-title" id="main-card-title">Roll Color Dice</div>
-
     <div class="selects">
       <select id="num-sel" autocomplete="off">
         <option value="1">1 die</option><option value="2">2 dice</option>
@@ -1005,7 +990,6 @@ var THEME_IMAGES = {
       <span style="color:#6a0099;font-weight:900;">Purple</span>.
     </div>
     <a id="chances-link" href="#">See your chances of winning →</a>
-
     <div id="show-hist" onclick="showHistory()">Your Last 20 Rolls ↓</div>
   </div>
 
@@ -1016,7 +1000,6 @@ var THEME_IMAGES = {
     <div id="hist-list"></div>
     <div class="hist-note">Note: only dice rolls with up to 6 dice are saved.</div>
   </div>
-
 </div>
 
 <script>
@@ -1031,12 +1014,13 @@ var COLORS = [
 var TITLES = ["What Color Will It Be?","Rolling..","Color Me Surprised!","Amazing!","Let's Roll!","Let's Go!","Good Luck!","Fingers Crossed..","Feeling Lucky?"];
 
 var rollHistory = JSON.parse(localStorage.getItem('dh')||'[]');
-var lastRoll    = JSON.parse(sessionStorage.getItem('lr')||'null');
-var freshRoll   = sessionStorage.getItem('fr') === '1';
 var numDice     = parseInt(sessionStorage.getItem('nd')||'4');
 
 document.getElementById('num-sel').value = numDice;
 document.getElementById('loader-title').textContent = TITLES[Math.floor(Math.random()*TITLES.length)];
+
+// ── Rolling lock to prevent double/triple click chaos ──
+var isRolling = false;
 
 function makeRoll(n){
   var r=[];
@@ -1044,7 +1028,7 @@ function makeRoll(n){
   return r;
 }
 
-/* ── SUPABASE ADMIN OVERRIDE ── */
+/* ── SUPABASE ── */
 var SUPABASE_URL = 'https://sqxkecwsvbmzrkqltjsk.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxeGtlY3dzdmJtenJrcWx0anNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NzY5MzQsImV4cCI6MjA5NjI1MjkzNH0.cd_d14fUVy8oH0lLWqrepoKfTEGHgRai6QbLjZ-v-Eg';
 
@@ -1065,11 +1049,12 @@ async function checkSupabaseOverride(){
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY
       }
-    }, 1000);
+    }, 3000);
     var data = await res.json();
     if(data && data.length > 0 && data[0].colors){
       var colors = JSON.parse(data[0].colors);
-      await fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
+      // Mark as used (deactivate) — fire and forget, don't block
+      fetchWithTimeout(SUPABASE_URL + '/rest/v1/dice_override?id=eq.' + data[0].id, {
         method: 'PATCH',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -1077,23 +1062,11 @@ async function checkSupabaseOverride(){
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ active: false })
-      }, 3000);
+      }, 5000).catch(function(){});
       return colors;
     }
   } catch(e){}
   return null;
-}
-
-function checkAdminOverride(){
-  try {
-    var params = new URLSearchParams(window.location.search);
-    if(params.has('force')){
-      var cols = JSON.parse(atob(params.get('force')));
-      if(Array.isArray(cols)){
-        localStorage.setItem('dice-override', JSON.stringify({active:true, colors:cols}));
-      }
-    }
-  } catch(e){}
 }
 
 function dieSize(n){
@@ -1105,12 +1078,11 @@ function dieSize(n){
   return 'die-xxs';
 }
 
-function renderDice(roll, animate){
-  var isLucky = sessionStorage.getItem('is-lucky') === '1';
+function renderDice(roll, animate, isLucky){
   var tt = document.getElementById('tabletop');
   tt.innerHTML = '';
   var sz = dieSize(roll.length);
-  roll.forEach(function(c){
+  roll.forEach(function(c, i){
     var d = document.createElement('div');
     d.className = 'die ' + sz + (animate?' rolling':'') + (isLucky?' die-lucky':'');
     if(!isLucky){
@@ -1121,7 +1093,8 @@ function renderDice(roll, animate){
     }
     if(animate){
       d.style.opacity = '0';
-      setTimeout(function(el){ el.classList.add('die-reveal'); el.style.opacity=''; }, 1670, d);
+      var delay = 1670 + i * 30;
+      (function(el){ setTimeout(function(){ el.classList.add('die-reveal'); el.style.opacity=''; }, delay); })(d);
     }
     var inner = document.createElement('div');
     if(isLucky){
@@ -1154,13 +1127,12 @@ function renderHistory(){
   });
 }
 
-function applyLuckyUI(isLucky){
+function applyLuckyUI(isLucky, rollCount){
   var mainCard = document.getElementById('main-card');
   var ct       = document.getElementById('main-card-title');
   var btn      = document.getElementById('roll-btn');
   var badge    = document.getElementById('lucky-badge');
   var numEl    = document.getElementById('lucky-num');
-  var rollCount= parseInt(localStorage.getItem('roll-count')||'0');
   if(isLucky){
     mainCard.classList.add('lucky-card');
     ct.textContent='Click for a Lucky Roll:';
@@ -1168,7 +1140,7 @@ function applyLuckyUI(isLucky){
     btn.textContent='Lucky Roll !';
     btn.classList.add('lucky-btn');
     if(badge){ badge.style.display='block'; }
-    if(numEl){ numEl.textContent=rollCount; }
+    if(numEl && rollCount){ numEl.textContent=rollCount; }
   } else {
     mainCard.classList.remove('lucky-card');
     ct.textContent='Roll Color Dice';
@@ -1182,33 +1154,100 @@ function applyLuckyUI(isLucky){
 function playRoll(){ try{ var s=document.getElementById('snd-roll'); s.currentTime=0; s.play(); }catch(e){} }
 function playSuccess(){ try{ var s=document.getElementById('snd-success'); s.currentTime=0; s.play(); }catch(e){} }
 
+// ── CORE: perform a roll (no reload — pure DOM update) ──
 async function doRoll(){
+  // Guard: ignore extra clicks while already rolling
+  if(isRolling) return;
+  isRolling = true;
+
+  var btn = document.getElementById('roll-btn');
+  btn.classList.add('is-rolling');
+
+  // Increment roll count
   var rollCount = parseInt(localStorage.getItem('roll-count')||'0') + 1;
   localStorage.setItem('roll-count', rollCount);
-  sessionStorage.setItem('is-lucky', (rollCount % 10 === 0) ? '1' : '0');
+  var isLucky = (rollCount % 10 === 0);
 
+  var n = parseInt(document.getElementById('num-sel').value);
+
+  // Animate existing dice into rolling state
   document.querySelectorAll('.die').forEach(function(d){ d.classList.add('rolling'); });
 
-  // Race Supabase against 500ms — use override if it arrives in time, otherwise roll randomly
+  playRoll();
+
+  // Check Supabase with a 500ms race (same as before but properly awaited)
   var overrideNames = await Promise.race([
     checkSupabaseOverride(),
     new Promise(function(res){ setTimeout(function(){ res(null); }, 500); })
   ]);
-  var n = overrideNames ? overrideNames.length : parseInt(document.getElementById('num-sel').value);
+
   var roll = overrideNames
     ? overrideNames.map(function(name){ return COLORS.find(function(c){ return c.name===name; })||COLORS[0]; })
     : makeRoll(n);
 
-  sessionStorage.setItem('lr', JSON.stringify(roll));
-  sessionStorage.setItem('nd', n);
-  sessionStorage.setItem('fr', '1');
-  if(n <= 6){
-    rollHistory.unshift(roll);
-    if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
-    localStorage.setItem('dh', JSON.stringify(rollHistory));
-  }
-  location.reload();
+  // Wait for rolling animation to finish (~1s), then reveal
+  setTimeout(function(){
+    // Save history
+    if(n <= 6){
+      rollHistory.unshift(roll);
+      if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
+      localStorage.setItem('dh', JSON.stringify(rollHistory));
+      renderHistory();
+    }
+
+    renderDice(roll, true, isLucky);
+    applyLuckyUI(isLucky, rollCount);
+
+    setTimeout(playSuccess, 550);
+
+    // Release lock after animation completes
+    setTimeout(function(){
+      btn.classList.remove('is-rolling');
+      isRolling = false;
+    }, 2200);
+
+  }, 900);
 }
+
+/* ── THEME ── */
+var THEME_IMAGES = {
+  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
+  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
+  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
+  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")',
+  void:   'url("https://i.imgur.com/yDIam5b.png")'
+};
+var THEME_COLORS = {
+  blue:   '#07111f',
+  red:    '#07111f',
+  duo:    '#07111f',
+  galaxy: '#05010f',
+  void:   '#000000'
+};
+
+function applyTheme(t){
+  var img   = THEME_IMAGES[t] || THEME_IMAGES.blue;
+  var color = THEME_COLORS[t] || THEME_COLORS.blue;
+  document.documentElement.style.setProperty('--bg-image', img);
+  document.documentElement.style.setProperty('--bg-color', color);
+  document.body.style.backgroundImage = img;
+  document.body.style.backgroundColor = color;
+  document.body.setAttribute('data-theme', t);
+  localStorage.setItem('dice-theme', t);
+  var sel = document.getElementById('theme-sel');
+  if(sel) sel.value = t;
+  var logoEl = document.getElementById('logo-img');
+  if(logoEl){
+    logoEl.src = (t === 'void')
+      ? 'https://i.imgur.com/yJp4DLB.png'
+      : 'https://i.imgur.com/ZkRjnSA.png';
+  }
+}
+
+(function(){
+  var saved = localStorage.getItem('dice-theme');
+  if(saved && THEME_IMAGES[saved]) applyTheme(saved);
+})();
 
 /* ── ADMIN UI ── */
 var adminUnlocked = false;
@@ -1219,7 +1258,6 @@ var creditsList = [
   { name: 'Voidy', role: 'Creator & Developer', link: 'https://www.tiktok.com/@voidy_v' }
 ];
 
-/* ── Gate ── */
 function openGate(){
   var gate = document.getElementById('admin-gate');
   gate.style.display = 'flex';
@@ -1251,22 +1289,14 @@ function openAdmin(){
 }
 function closeAdmin(){ document.getElementById('admin-panel').style.display = 'none'; }
 
-
-
-/* ── Height / Padding tab ── */
-function syncSlider(sliderId, valId, cssProp, unit){
+/* ── Height sliders ── */
+function syncSlider(sliderId, valId){
   var slider = document.getElementById(sliderId);
   var valEl  = document.getElementById(valId);
-  function apply(){
-    var v = parseInt(slider.value);
-    valEl.value = v;
-    if(cssProp) document.documentElement.style.setProperty(cssProp, v+(unit||'px'));
-  }
-  slider.addEventListener('input', function(){ valEl.value=slider.value; if(cssProp) apply(); });
+  slider.addEventListener('input', function(){ valEl.value=slider.value; });
   valEl.addEventListener('input', function(){
     var v = Math.max(parseInt(slider.min),Math.min(parseInt(slider.max),parseInt(valEl.value)||0));
     slider.value = v; valEl.value = v;
-    if(cssProp) apply();
   });
 }
 
@@ -1478,46 +1508,6 @@ function renderCredits(){
   });
 }
 
-/* ── THEME ── */
-var THEME_IMAGES = {
-  blue:   'url("https://i.imgur.com/o5RekSz.jpeg")',
-  red:    'url("https://i.imgur.com/n3ad7uK.jpeg")',
-  duo:    'url("https://i.imgur.com/XAdFEAm.jpeg")',
-  galaxy: 'url("https://i.imgur.com/u1ANnmh.jpeg")',
-  void:   'url("https://i.imgur.com/yDIam5b.png")'
-};
-var THEME_COLORS = {
-  blue:   '#07111f',
-  red:    '#07111f',
-  duo:    '#07111f',
-  galaxy: '#05010f',
-  void:   '#000000'
-};
-
-function applyTheme(t){
-  var img   = THEME_IMAGES[t] || THEME_IMAGES.blue;
-  var color = THEME_COLORS[t] || THEME_COLORS.blue;
-  document.documentElement.style.setProperty('--bg-image', img);
-  document.documentElement.style.setProperty('--bg-color', color);
-  document.body.style.backgroundImage = img;
-  document.body.style.backgroundColor = color;
-  document.body.setAttribute('data-theme', t);
-  localStorage.setItem('dice-theme', t);
-  var sel = document.getElementById('theme-sel');
-  if(sel) sel.value = t;
-  var logoEl = document.getElementById('logo-img');
-  if(logoEl){
-    logoEl.src = (t === 'void')
-      ? 'https://i.imgur.com/yJp4DLB.png'
-      : 'https://i.imgur.com/ZkRjnSA.png';
-  }
-}
-
-(function(){
-  var saved = localStorage.getItem('dice-theme');
-  if(saved && THEME_IMAGES[saved]) applyTheme(saved);
-})();
-
 function showHistory(){
   renderHistory();
   document.getElementById('hist-card').classList.add('on');
@@ -1532,11 +1522,10 @@ function hideHistory(){
 document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('admin-close').addEventListener('click', closeAdmin);
 
-  /* ── HEIGHT TAB sliders ── */
-  syncSlider('pad-slider', 'pad-val', null, 'px');
-  syncSlider('gap-slider',    'gap-val',    null, 'px');
-  syncSlider('hdrtop-slider', 'hdrtop-val', null, 'px');
-  // Live apply card padding
+  syncSlider('pad-slider', 'pad-val');
+  syncSlider('gap-slider', 'gap-val');
+  syncSlider('hdrtop-slider', 'hdrtop-val');
+
   document.getElementById('pad-slider').addEventListener('input', function(){
     var v = this.value+'px';
     document.querySelectorAll('.card').forEach(function(c){ c.style.paddingTop=v; c.style.paddingBottom=v; });
@@ -1560,7 +1549,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('hdr').style.paddingTop = this.value+'px';
   });
   document.getElementById('height-reset').addEventListener('click', function(){
-    ['pad-slider','gap-slider','hdrtop-slider'].forEach(function(id){ document.getElementById(id).dispatchEvent(new Event('input')); });
     document.getElementById('pad-slider').value=36; document.getElementById('pad-val').value=36;
     document.getElementById('gap-slider').value=18; document.getElementById('gap-val').value=18;
     document.getElementById('hdrtop-slider').value=90; document.getElementById('hdrtop-val').value=90;
@@ -1568,15 +1556,13 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('hdr').style.paddingTop = '90px';
   });
 
-  /* ── LOGO TAB ── */
   document.getElementById('logo-preview-btn').addEventListener('click', previewLogo);
   document.getElementById('logo-apply-btn').addEventListener('click', applyLogo);
   document.getElementById('logo-reset-btn').addEventListener('click', resetLogo);
-  // Load saved logo on open
+
   var savedLogo = localStorage.getItem('admin-logo-url');
   if(savedLogo){ var logoEl2=document.getElementById('logo-img'); if(logoEl2) logoEl2.src=savedLogo; }
 
-  /* ── ADD TEXT TAB ── */
   document.querySelectorAll('.pos-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.pos-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -1585,14 +1571,9 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
   document.getElementById('ft-add-btn').addEventListener('click', addFloatText);
-
-  /* ── ADD CARDS TAB ── */
   document.getElementById('nc-add-btn').addEventListener('click', addCustomCard);
-
-  /* ── CREDITS TAB ── */
   document.getElementById('cr-add-btn').addEventListener('click', addCredit);
 
-  /* ── GATE BUTTONS ── */
   document.getElementById('gate-submit').addEventListener('click', submitGate);
   document.getElementById('gate-close-btn').addEventListener('click', closeGate);
   document.getElementById('gate-input').addEventListener('keydown', function(e){
@@ -1600,36 +1581,72 @@ document.addEventListener('DOMContentLoaded', function(){
     if(e.key === 'Escape') closeGate();
   });
 
-  /* ── F12 OPENS GATE ── */
   document.addEventListener('keydown', function(e){
     if(e.key === 'F12'){
       e.preventDefault();
-      if(adminUnlocked){
-        openAdmin();
-      } else {
-        openGate();
-      }
+      if(adminUnlocked){ openAdmin(); } else { openGate(); }
     }
   });
-
-  checkAdminOverride();
 });
 
-document.getElementById('roll-btn').addEventListener('click', function(e){ e.preventDefault(); doRoll(); });
-document.getElementById('num-sel').addEventListener('change', function(){ sessionStorage.setItem('nd', this.value); doRoll(); });
-document.getElementById('theme-sel').addEventListener('change', function(){ applyTheme(this.value); });
+document.getElementById('roll-btn').addEventListener('click', function(e){
+  e.preventDefault();
+  doRoll();
+});
 
-window.addEventListener('DOMContentLoaded', function(){
-  if(!lastRoll){ lastRoll=makeRoll(numDice); sessionStorage.setItem('lr', JSON.stringify(lastRoll)); freshRoll=true; }
-  renderDice(lastRoll, freshRoll);
-  applyLuckyUI(sessionStorage.getItem('is-lucky')==='1');
-  sessionStorage.setItem('fr','0');
+document.getElementById('num-sel').addEventListener('change', function(){
+  sessionStorage.setItem('nd', this.value);
+  numDice = parseInt(this.value);
+  doRoll();
+});
+
+document.getElementById('theme-sel').addEventListener('change', function(){
+  applyTheme(this.value);
+});
+
+/* ── PAGE INIT: first load checks Supabase too ── */
+window.addEventListener('DOMContentLoaded', async function(){
+  // Restore num dice selector
+  document.getElementById('num-sel').value = numDice;
+
   renderHistory();
-  if(freshRoll){ playRoll(); setTimeout(playSuccess, 550); }
+
+  // Hide loader after a moment
   setTimeout(function(){
     document.getElementById('loader').classList.add('hide');
     setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 520);
   }, 1250);
+
+  // FIX: On first open, also check Supabase before showing initial dice
+  // Race Supabase against 500ms so the page doesn't feel slow
+  var overrideNames = await Promise.race([
+    checkSupabaseOverride(),
+    new Promise(function(res){ setTimeout(function(){ res(null); }, 500); })
+  ]);
+
+  var rollCount = parseInt(localStorage.getItem('roll-count')||'0') + 1;
+  localStorage.setItem('roll-count', rollCount);
+  var isLucky = (rollCount % 10 === 0);
+
+  var roll;
+  if(overrideNames){
+    roll = overrideNames.map(function(name){ return COLORS.find(function(c){ return c.name===name; })||COLORS[0]; });
+  } else {
+    roll = makeRoll(numDice);
+  }
+
+  if(numDice <= 6){
+    rollHistory.unshift(roll);
+    if(rollHistory.length > 20) rollHistory = rollHistory.slice(0,20);
+    localStorage.setItem('dh', JSON.stringify(rollHistory));
+    renderHistory();
+  }
+
+  renderDice(roll, true, isLucky);
+  applyLuckyUI(isLucky, rollCount);
+
+  playRoll();
+  setTimeout(playSuccess, 550);
 });
 </script>
 </body>
